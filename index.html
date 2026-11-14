@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Global Crypto & Verification Marketplace</title>
+    <title>Global Crypto & Web3 Marketplace Pro</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Telegram Web App SDK -->
@@ -16,682 +16,813 @@
             theme: {
                 extend: {
                     colors: {
-                        darkBg: '#0b0e14',
-                        cardBg: '#151922',
-                        accentGreen: '#00ecb9',
+                        darkBg: '#090d16',
+                        cardBg: '#111827',
+                        cardHover: '#1f2937',
+                        accentGreen: '#10b981',
                         accentBlue: '#3b82f6',
-                        darkBorder: '#222733'
+                        accentPurple: '#8b5cf6',
+                        darkBorder: '#1f293d'
                     }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #0b0e14; color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #090d16; color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="h-full flex flex-col justify-between selection:bg-accentGreen selection:text-black">
 
-    <!-- Top Notification / Status Banner -->
-    <div id="topBanner" class="bg-gradient-to-r from-accentBlue to-accentGreen text-black text-xs font-bold py-1.5 px-3 text-center truncate shadow-md">
-        🚀 Welcome! 100% Secure Crypto Trading & Verification Mini App Active.
+    <!-- Top Status Banner -->
+    <div id="topBanner" class="bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-600 text-white text-[11px] font-bold py-2 px-4 text-center truncate shadow-lg flex items-center justify-between">
+        <span id="bannerTextMarquee"><i class="fa-solid fa-bullhorn mr-2"></i> Official Web3 Crypto Platform & Secure Multi-Network Trading</span>
+        <span id="headerAdminShortcut" class="hidden bg-black/40 px-2 py-0.5 rounded text-[10px] cursor-pointer" onclick="switchPage('admin')"><i class="fa-solid fa-lock mr-1"></i> Admin</span>
     </div>
 
-    <!-- MAIN APP CONTAINER -->
-    <div id="appContainer" class="flex-1 overflow-y-auto hide-scrollbar pb-24">
+    <!-- MAIN APP WRAPPER (Multi-Page Architecture) -->
+    <div id="appContainer" class="flex-1 overflow-y-auto hide-scrollbar pb-24 p-4 max-w-md mx-auto w-full">
 
-        <!-- ================= VIEW 1: AUTHENTICATION (Sign Up / Login) ================= -->
-        <div id="viewAuth" class="p-5 max-w-md mx-auto mt-4">
-            <div class="text-center mb-8">
-                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-cardBg border border-darkBorder text-accentGreen text-3xl mb-3 shadow-xl">
-                    <i class="fa-solid fa-shield-halved"></i>
+        <!-- ================= PAGE 1: SIGN UP ================= -->
+        <div id="pageSignup" class="space-y-6 pt-4">
+            <div class="text-center space-y-2">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-cardBg border border-darkBorder text-accentGreen text-4xl shadow-2xl">
+                    <i class="fa-solid fa-shield-cat"></i>
                 </div>
-                <h1 class="text-2xl font-black tracking-wider text-white">GLOBAL MARKETPLACE</h1>
-                <p class="text-xs text-gray-400 mt-1">Secure Telegram Trading & Verification Portal</p>
+                <h1 class="text-2xl font-black text-white tracking-wider">CREATE ACCOUNT</h1>
+                <p class="text-xs text-gray-400">Join the Next-Gen Global Crypto & Web3 Portal</p>
             </div>
 
-            <!-- Tab Switcher -->
-            <div class="flex bg-cardBg p-1 rounded-xl border border-darkBorder mb-6">
-                <button onclick="switchAuthTab('login')" id="tabLoginBtn" class="flex-1 py-2.5 text-xs font-bold rounded-lg bg-accentGreen text-black transition-all">Sign In</button>
-                <button onclick="switchAuthTab('signup')" id="tabSignupBtn" class="flex-1 py-2.5 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition-all">Register</button>
+            <div class="bg-cardBg p-6 rounded-3xl border border-darkBorder shadow-2xl space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Username</label>
+                    <input type="text" id="regUser" placeholder="e.g. crypto_master" class="w-full bg-darkBg border border-darkBorder rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accentGreen transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Email Address</label>
+                    <input type="email" id="regEmail" placeholder="name@example.com" class="w-full bg-darkBg border border-darkBorder rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accentGreen transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Password</label>
+                    <input type="password" id="regPass" placeholder="••••••••" class="w-full bg-darkBg border border-darkBorder rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accentGreen transition-colors">
+                </div>
+                <button onclick="handleRegister()" class="w-full bg-accentGreen text-black font-extrabold py-3.5 rounded-2xl shadow-xl hover:opacity-90 active:scale-[0.98] transition-all text-sm uppercase tracking-wider">Register & Claim Bonus</button>
+                <div class="text-center pt-2">
+                    <button onclick="switchPage('login')" class="text-xs text-accentBlue hover:underline font-semibold">Already have an account? Sign In</button>
+                </div>
             </div>
-
-            <!-- Login Form -->
-            <form id="formLogin" onsubmit="handleLogin(event)" class="space-y-4 bg-cardBg p-5 rounded-2xl border border-darkBorder shadow-xl">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1">Telegram Username or Email</label>
-                    <input type="text" id="loginUser" required class="w-full bg-darkBg border border-darkBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accentGreen transition-colors" placeholder="e.g. trader_99">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1">Password</label>
-                    <input type="password" id="loginPass" required class="w-full bg-darkBg border border-darkBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accentGreen transition-colors" placeholder="••••••••">
-                </div>
-                <div class="flex justify-between items-center text-xs">
-                    <label class="flex items-center text-gray-400 cursor-pointer"><input type="checkbox" class="mr-2 rounded accent-accentGreen"> Remember me</label>
-                    <button type="button" onclick="openForgotModal()" class="text-accentBlue hover:underline">Forgot password?</button>
-                </div>
-                <button type="submit" class="w-full bg-accentGreen text-black font-bold py-3.5 rounded-xl shadow-lg hover:opacity-90 active:scale-[0.98] transition-all">Secure Login</button>
-            </form>
-
-            <!-- Signup Form -->
-            <form id="formSignup" onsubmit="handleSignup(event)" class="space-y-4 bg-cardBg p-5 rounded-2xl border border-darkBorder shadow-xl hidden">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1">Choose Username</label>
-                    <input type="text" id="signupUser" required class="w-full bg-darkBg border border-darkBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accentGreen transition-colors" placeholder="e.g. crypto_king">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1">Email Address</label>
-                    <input type="email" id="signupEmail" required class="w-full bg-darkBg border border-darkBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accentGreen transition-colors" placeholder="name@example.com">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1">Create Password</label>
-                    <input type="password" id="signupPass" required class="w-full bg-darkBg border border-darkBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accentGreen transition-colors" placeholder="••••••••">
-                </div>
-                <button type="submit" class="w-full bg-accentBlue text-white font-bold py-3.5 rounded-xl shadow-lg hover:opacity-90 active:scale-[0.98] transition-all">Create Account & Claim Bonus</button>
-            </form>
         </div>
 
-        <!-- ================= VIEW 2: MAIN APP DASHBOARD ================= -->
-        <div id="viewDashboard" class="hidden p-4 max-w-md mx-auto space-y-4">
+        <!-- ================= PAGE 2: LOGIN ================= -->
+        <div id="pageLogin" class="space-y-6 pt-4 hidden">
+            <div class="text-center space-y-2">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-cardBg border border-darkBorder text-accentBlue text-4xl shadow-2xl">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </div>
+                <h1 class="text-2xl font-black text-white tracking-wider">WELCOME BACK</h1>
+                <p class="text-xs text-gray-400">Secure Authentication & Portfolio Access</p>
+            </div>
 
-            <!-- User Header & Balance Card -->
-            <div class="bg-gradient-to-br from-cardBg to-darkBg p-5 rounded-3xl border border-darkBorder shadow-2xl relative overflow-hidden">
+            <div class="bg-cardBg p-6 rounded-3xl border border-darkBorder shadow-2xl space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Username or Email</label>
+                    <input type="text" id="loginUser" placeholder="Enter username..." class="w-full bg-darkBg border border-darkBorder rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accentBlue transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Password</label>
+                    <input type="password" id="loginPass" placeholder="••••••••" class="w-full bg-darkBg border border-darkBorder rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accentBlue transition-colors">
+                </div>
+                <div class="flex justify-between items-center text-xs">
+                    <label class="flex items-center text-gray-400 cursor-pointer"><input type="checkbox" class="mr-2 rounded accent-accentBlue"> Remember</label>
+                    <button onclick="switchPage('forgot')" class="text-accentBlue hover:underline">Forgot password?</button>
+                </div>
+                <button onclick="handleLogin()" class="w-full bg-accentBlue text-white font-extrabold py-3.5 rounded-2xl shadow-xl hover:opacity-90 active:scale-[0.98] transition-all text-sm uppercase tracking-wider">Sign In to Dashboard</button>
+                <div class="text-center pt-2">
+                    <button onclick="switchPage('signup')" class="text-xs text-gray-400 hover:text-white font-semibold">New here? Create account</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 3: FORGOT / RECOVER PASSWORD ================= -->
+        <div id="pageForgot" class="space-y-6 pt-6 hidden">
+            <div class="bg-cardBg p-6 rounded-3xl border border-darkBorder shadow-2xl space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-base font-bold text-white"><i class="fa-solid fa-key text-yellow-400 mr-2"></i> Account Recovery</h3>
+                    <button onclick="switchPage('login')" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <p class="text-xs text-gray-400 leading-relaxed">Enter your registered email address or Telegram handle to receive password recovery instructions and secure account restoration tokens.</p>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Registered Email / Username</label>
+                    <input type="text" id="recoverTarget" placeholder="e.g. user@gmail.com" class="w-full bg-darkBg border border-darkBorder rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-yellow-400">
+                </div>
+                <button onclick="submitRecoveryRequest()" class="w-full bg-yellow-500 text-black font-extrabold py-3.5 rounded-2xl text-xs uppercase tracking-wider shadow-lg hover:bg-yellow-400">Send Recovery Token</button>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 4: HOME ================= -->
+        <div id="pageHome" class="space-y-4 hidden">
+            <!-- User Balance & Header Card -->
+            <div class="bg-gradient-to-br from-cardBg via-cardHover to-darkBg p-5 rounded-3xl border border-darkBorder shadow-2xl relative overflow-hidden">
                 <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-accentGreen/10 rounded-full blur-2xl pointer-events-none"></div>
                 <div class="flex justify-between items-start mb-4">
                     <div>
-                        <span class="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 bg-accentGreen/20 text-accentGreen rounded-full">Verified Account</span>
-                        <h2 id="lblUsername" class="text-lg font-bold text-white mt-1">@trader_user</h2>
+                        <span class="text-[10px] uppercase font-extrabold tracking-widest px-2.5 py-1 bg-accentGreen/20 text-accentGreen rounded-full">VIP Trader Level 2</span>
+                        <h2 id="homeUsernameDisplay" class="text-lg font-bold text-white mt-1.5">@trader</h2>
                     </div>
-                    <button onclick="handleLogout()" class="text-xs text-red-400 hover:text-red-300 bg-red-500/10 px-3 py-1.5 rounded-xl border border-red-500/20 transition-all"><i class="fa-solid fa-power-off mr-1"></i> Logout</button>
+                    <button onclick="handleLogout()" class="text-xs text-red-400 bg-red-500/10 px-3 py-1.5 rounded-xl border border-red-500/20"><i class="fa-solid fa-power-off mr-1"></i> Logout</button>
                 </div>
-                <div class="bg-darkBg/60 p-4 rounded-2xl border border-darkBorder flex justify-between items-center">
+                <div class="bg-darkBg/80 p-4 rounded-2xl border border-darkBorder flex justify-between items-center">
                     <div>
                         <p class="text-xs text-gray-400">Total Portfolio Balance</p>
-                        <h3 class="text-2xl font-black text-white mt-0.5"><span id="userBalance">1,250.00</span> <span class="text-xs font-normal text-accentGreen">USDT</span></h3>
+                        <h3 class="text-2xl font-black text-white mt-0.5"><span id="homeUserBalance">2,500.00</span> <span class="text-xs font-normal text-accentGreen">USDT</span></h3>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="switchTab('wallet')" class="bg-accentGreen text-black text-xs font-bold px-3.5 py-2.5 rounded-xl shadow hover:opacity-90">Deposit</button>
-                        <button onclick="switchTab('wallet')" class="bg-darkBorder text-white text-xs font-bold px-3.5 py-2.5 rounded-xl hover:bg-gray-800">Withdraw</button>
+                        <button onclick="switchPage('wallet')" class="bg-accentGreen text-black text-xs font-bold px-3 py-2.5 rounded-xl shadow">Deposit</button>
+                        <button onclick="switchPage('wallet')" class="bg-darkBorder text-white text-xs font-bold px-3 py-2.5 rounded-xl">Withdraw</button>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 1: HOME -->
-            <div id="tabHome" class="space-y-4">
-                <!-- Live Platform Stats -->
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-cardBg p-3.5 rounded-2xl border border-darkBorder">
-                        <p class="text-[10px] text-gray-400 uppercase font-semibold">Active Traders</p>
-                        <p class="text-lg font-bold text-white mt-0.5"><i class="fa-solid fa-users text-accentGreen mr-1 text-sm"></i> <span id="statUsers">14,892</span></p>
-                    </div>
-                    <div class="bg-cardBg p-3.5 rounded-2xl border border-darkBorder">
-                        <p class="text-[10px] text-gray-400 uppercase font-semibold">24h Payout Volume</p>
-                        <p class="text-lg font-bold text-accentGreen mt-0.5"><i class="fa-solid fa-chart-line mr-1 text-sm"></i> $184,200</p>
-                    </div>
+            <!-- Dynamic Admin Bonus Card -->
+            <div class="bg-gradient-to-r from-purple-900/50 via-indigo-900/50 to-cardBg p-4 rounded-2xl border border-purple-500/30 flex items-center justify-between shadow-lg">
+                <div>
+                    <span id="homeBonusBadge" class="text-[10px] uppercase font-bold tracking-wider bg-purple-500/20 text-purple-300 px-2.5 py-0.5 rounded">⚡ Active Bonus Event</span>
+                    <h4 id="homeBonusTitle" class="text-sm font-bold text-white mt-1">First Deposit +50% Bonus</h4>
+                    <p id="homeBonusDesc" class="text-[11px] text-gray-300 mt-0.5">Top up USDT/BTC now to instantly claim bonus rewards.</p>
                 </div>
+                <button onclick="switchPage('wallet')" class="bg-purple-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow whitespace-nowrap">Claim Now</button>
+            </div>
 
-                <!-- Admin Configurable Bonus & Banner -->
-                <div class="bg-gradient-to-r from-purple-900/40 via-blue-900/40 to-cardBg p-4 rounded-2xl border border-purple-500/30 flex items-center justify-between shadow-lg">
-                    <div>
-                        <span class="text-[10px] uppercase font-bold tracking-wider bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded">Special Event</span>
-                        <h4 class="text-sm font-bold text-white mt-1">First Deposit +50% Bonus Active</h4>
-                        <p class="text-[11px] text-gray-300 mt-0.5">Top up USDT/BTC now to claim instant reward.</p>
-                    </div>
-                    <button onclick="switchTab('wallet')" class="bg-purple-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow hover:bg-purple-500 whitespace-nowrap">Claim</button>
-                </div>
-
-                <!-- Leaderboards -->
+            <!-- Live Platform Stats -->
+            <div class="grid grid-cols-2 gap-3">
                 <div class="bg-cardBg p-4 rounded-2xl border border-darkBorder">
-                    <div class="flex justify-between items-center mb-3">
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-trophy text-yellow-400 mr-1.5"></i> Top Traders & Withdrawals</h3>
-                    </div>
-                    <div class="space-y-2.5 text-xs">
-                        <div class="flex justify-between items-center bg-darkBg p-2.5 rounded-xl border border-darkBorder">
-                            <div class="flex items-center gap-2">
-                                <span class="w-5 h-5 rounded-full bg-yellow-500/20 text-yellow-400 flex items-center justify-center font-bold text-[10px]">1</span>
-                                <span class="font-medium text-white">@cryptoking_99</span>
-                            </div>
-                            <span class="text-accentGreen font-bold">+$14,500.00</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-darkBg p-2.5 rounded-xl border border-darkBorder">
-                            <div class="flex items-center gap-2">
-                                <span class="w-5 h-5 rounded-full bg-gray-400/20 text-gray-300 flex items-center justify-center font-bold text-[10px]">2</span>
-                                <span class="font-medium text-white">@alex_trader</span>
-                            </div>
-                            <span class="text-accentGreen font-bold">+$9,230.00</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-darkBg p-2.5 rounded-xl border border-darkBorder">
-                            <div class="flex items-center gap-2">
-                                <span class="w-5 h-5 rounded-full bg-amber-700/20 text-amber-500 flex items-center justify-center font-bold text-[10px]">3</span>
-                                <span class="font-medium text-white">@nepal_whale</span>
-                            </div>
-                            <span class="text-accentGreen font-bold">+$6,800.00</span>
-                        </div>
-                    </div>
+                    <p class="text-[10px] text-gray-400 uppercase font-semibold">Total Registered Users</p>
+                    <p id="statTotalUsers" class="text-lg font-bold text-white mt-1"><i class="fa-solid fa-users text-accentGreen mr-1.5 text-sm"></i> 24,892</p>
+                </div>
+                <div class="bg-cardBg p-4 rounded-2xl border border-darkBorder">
+                    <p class="text-[10px] text-gray-400 uppercase font-semibold">Live Active Traders</p>
+                    <p id="statActiveTraders" class="text-lg font-bold text-accentBlue mt-1"><i class="fa-solid fa-signal mr-1.5 text-sm"></i> 1,420</p>
                 </div>
             </div>
 
-            <!-- TAB 2: TOKENS & TRADING (50+ Coins & Multi-Network Intervals) -->
-            <div id="tabTrading" class="hidden space-y-4">
-                <div class="bg-cardBg p-4 rounded-2xl border border-darkBorder">
-                    <div class="flex justify-between items-center mb-3">
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400">Select Coin & Network</h3>
-                        <span class="text-[10px] text-accentGreen font-semibold">50+ Assets Supported</span>
-                    </div>
-                    <div class="relative mb-3">
-                        <i class="fa-solid fa-search absolute left-3.5 top-3 text-xs text-gray-500"></i>
-                        <input type="text" id="coinSearch" oninput="filterCoins()" placeholder="Search BTC, ETH, USDT, SOL..." class="w-full bg-darkBg border border-darkBorder rounded-xl pl-9 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-accentGreen">
-                    </div>
-                    <!-- Coin List -->
-                    <div id="coinGrid" class="space-y-2 max-h-64 overflow-y-auto pr-1">
-                        <!-- Populated dynamically via JS -->
+            <!-- Top Traders & Top Withdrawals Leaderboard -->
+            <div class="bg-cardBg p-4 rounded-2xl border border-darkBorder space-y-3">
+                <div class="flex justify-between items-center border-b border-darkBorder pb-2">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-trophy text-yellow-400 mr-1.5"></i> Live Leaderboard</h3>
+                    <div class="flex gap-2 text-[10px]">
+                        <span class="text-accentGreen font-bold">Top Trades</span>
                     </div>
                 </div>
+                <div id="leaderboardList" class="space-y-2 text-xs">
+                    <div class="flex justify-between items-center bg-darkBg p-2.5 rounded-xl border border-darkBorder">
+                        <div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-yellow-500/20 text-yellow-400 flex items-center justify-center font-bold text-[10px]">1</span><span class="font-medium text-white">@cryptoking_99</span></div>
+                        <span class="text-accentGreen font-bold">+$18,500.00</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-darkBg p-2.5 rounded-xl border border-darkBorder">
+                        <div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-gray-400/20 text-gray-300 flex items-center justify-center font-bold text-[10px]">2</span><span class="font-medium text-white">@alex_trader</span></div>
+                        <span class="text-accentGreen font-bold">+$12,400.00</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-darkBg p-2.5 rounded-xl border border-darkBorder">
+                        <div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-amber-700/20 text-amber-500 flex items-center justify-center font-bold text-[10px]">3</span><span class="font-medium text-white">@nepal_whale</span></div>
+                        <span class="text-accentGreen font-bold">+$8,950.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                <!-- Network & Interval Selector Box (Hidden until coin selected) -->
-                <div id="tradingBox" class="bg-cardBg p-4 rounded-2xl border border-darkBorder hidden">
-                    <h3 id="selectedCoinTitle" class="text-sm font-bold text-white mb-2">Configure Trade: USDT</h3>
-                    
-                    <label class="block text-[11px] text-gray-400 mb-1">Select Network:</label>
-                    <div id="networkButtons" class="grid grid-cols-3 gap-2 mb-3">
+        <!-- ================= PAGE 5: TRADING & TOKENS (50+ Coins & Multi-Network Package Pricing) ================= -->
+        <div id="pageTrading" class="space-y-4 hidden">
+            <div class="bg-cardBg p-4 rounded-2xl border border-darkBorder space-y-3">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-coins text-accentGreen mr-1.5"></i> Select Asset (50+ Coins)</h3>
+                    <span class="text-[10px] bg-accentGreen/10 text-accentGreen px-2 py-0.5 rounded font-bold">Live Sync</span>
+                </div>
+                <div class="relative">
+                    <i class="fa-solid fa-search absolute left-3.5 top-3 text-xs text-gray-500"></i>
+                    <input type="text" id="coinSearchInput" oninput="renderCoins()" placeholder="Search BTC, ETH, USDT, SOL..." class="w-full bg-darkBg border border-darkBorder rounded-xl pl-9 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-accentGreen">
+                </div>
+                <!-- 50+ Coins Container -->
+                <div id="coinsGridContainer" class="grid grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Network & Custom Interval / Amount Box -->
+            <div id="tradingConfigSection" class="bg-cardBg p-4 rounded-2xl border border-darkBorder space-y-3 hidden">
+                <div class="flex justify-between items-center border-b border-darkBorder pb-2">
+                    <h3 id="activeCoinTitle" class="text-sm font-bold text-white">Selected: USDT</h3>
+                    <span class="text-[10px] text-accentGreen font-semibold">Configured by Admin</span>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] text-gray-400 mb-1.5 font-semibold">Select Blockchain Network:</label>
+                    <div id="networkChoicesBox" class="flex flex-wrap gap-2">
                         <!-- Populated dynamically -->
                     </div>
+                </div>
 
-                    <label class="block text-[11px] text-gray-400 mb-1">Select Interval & Amount Package:</label>
-                    <div id="packageButtons" class="space-y-2 mb-4">
+                <div>
+                    <label class="block text-[11px] text-gray-400 mb-1.5 font-semibold">Select Admin-Set Amount & Duration Package:</label>
+                    <div id="packageChoicesBox" class="space-y-2">
                         <!-- Populated dynamically -->
                     </div>
-
-                    <button onclick="executeTrade()" class="w-full bg-accentGreen text-black font-bold py-3 rounded-xl shadow hover:opacity-90 active:scale-[0.98] transition-all text-xs uppercase tracking-wider">Execute Trade / Contract</button>
                 </div>
+
+                <div class="bg-darkBg p-3 rounded-xl border border-darkBorder flex justify-between items-center text-xs">
+                    <span class="text-gray-400">Required Return Payout:</span>
+                    <span id="calculatedReturnAmount" class="font-bold text-accentGreen">1,000.00 USDT</span>
+                </div>
+
+                <button onclick="executeCryptoTrade()" class="w-full bg-accentGreen text-black font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider shadow-lg hover:opacity-90 active:scale-[0.98] transition-all">Confirm & Execute Contract</button>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 6: WALLET (Deposit, Withdraw, 50+ Wallets Connect) ================= -->
+        <div id="pageWallet" class="space-y-4 hidden">
+            <!-- Wallet Navigation Sub-Bar -->
+            <div class="flex bg-cardBg p-1 rounded-2xl border border-darkBorder">
+                <button onclick="switchWalletTab('deposit')" id="wTabDep" class="flex-1 py-2 text-xs font-bold rounded-xl bg-accentGreen text-black transition-all">Deposit</button>
+                <button onclick="switchWalletTab('withdraw')" id="wTabWith" class="flex-1 py-2 text-xs font-bold rounded-xl text-gray-400 hover:text-white transition-all">Withdraw</button>
+                <button onclick="switchWalletTab('connect')" id="wTabConn" class="flex-1 py-2 text-xs font-bold rounded-xl text-gray-400 hover:text-white transition-all">Connect Wallets (50+)</button>
             </div>
 
-            <!-- TAB 3: WALLET (Deposit, Withdraw, Proof & External Connectors) -->
-            <div id="tabWallet" class="hidden space-y-4">
-                <!-- Deposit / Withdraw Switcher -->
-                <div class="flex bg-cardBg p-1 rounded-xl border border-darkBorder">
-                    <button onclick="switchWalletSub('deposit')" id="subDepBtn" class="flex-1 py-2 text-xs font-bold rounded-lg bg-accentGreen text-black transition-all">Deposit Crypto</button>
-                    <button onclick="switchWalletSub('withdraw')" id="subWithBtn" class="flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition-all">Withdrawal</button>
-                    <button onclick="switchWalletSub('connect')" id="subConnBtn" class="flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition-all">Connect Wallet</button>
+            <!-- DEPOSIT SECTION -->
+            <div id="walletDepositPane" class="bg-cardBg p-5 rounded-2xl border border-darkBorder space-y-4">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-arrow-down-to-bracket text-accentGreen mr-1.5"></i> Crypto Deposit Center</h3>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Select Deposit Asset & Network</label>
+                    <select id="depositAssetSelect" onchange="updateDepositAddressDisplay()" class="w-full bg-darkBg border border-darkBorder rounded-xl px-3.5 py-3 text-xs text-white focus:outline-none focus:border-accentGreen">
+                        <option value="usdt_trc20">USDT (TRC20)</option>
+                        <option value="usdt_bep20">USDT (BEP20)</option>
+                        <option value="btc">Bitcoin (BTC)</option>
+                        <option value="eth">Ethereum (ERC20)</option>
+                        <option value="sol">Solana (SOL)</option>
+                    </select>
                 </div>
-
-                <!-- DEPOSIT SUB-SECTION -->
-                <div id="walletDeposit" class="bg-cardBg p-4 rounded-2xl border border-darkBorder space-y-3">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400">Admin Deposit Addresses</h3>
-                    <div>
-                        <label class="block text-[11px] text-gray-400 mb-1">Select Coin to Deposit</label>
-                        <select id="depCoinSelect" onchange="updateDepositAddress()" class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-accentGreen">
-                            <option value="usdt_trc20">USDT (TRC20)</option>
-                            <option value="usdt_bep20">USDT (BEP20)</option>
-                            <option value="btc">Bitcoin (BTC)</option>
-                            <option value="eth">Ethereum (ERC20)</option>
-                        </select>
-                    </div>
-                    <div class="bg-darkBg p-3 rounded-xl border border-darkBorder">
-                        <p class="text-[10px] text-gray-400 mb-1">Send funds to this address:</p>
-                        <div class="flex justify-between items-center bg-cardBg p-2 rounded border border-darkBorder">
-                            <span id="adminDepositAddress" class="text-xs font-mono text-accentGreen truncate mr-2">TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE</span>
-                            <button onclick="copyAddress()" class="text-xs bg-gray-700 text-white px-2.5 py-1 rounded hover:bg-gray-600"><i class="fa-solid fa-copy"></i></button>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-gray-400 mb-1">Transaction ID (TXID)</label>
-                        <input type="text" id="depTxid" placeholder="Paste TXID hash here..." class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-accentGreen">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-gray-400 mb-1">Payment Proof Screenshot URL / File Name</label>
-                        <input type="text" id="depProof" placeholder="e.g. screenshot_receipt.png" class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-accentGreen">
-                    </div>
-                    <button onclick="submitDepositProof()" class="w-full bg-accentGreen text-black font-bold py-3 rounded-xl text-xs shadow hover:opacity-90">Submit Proof to Admin</button>
-                </div>
-
-                <!-- WITHDRAWAL SUB-SECTION -->
-                <div id="walletWithdraw" class="bg-cardBg p-4 rounded-2xl border border-darkBorder space-y-3 hidden">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400">Request Withdrawal</h3>
-                    <div>
-                        <label class="block text-[11px] text-gray-400 mb-1">Select Asset</label>
-                        <select class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2.5 text-xs text-white">
-                            <option>USDT (TRC20)</option>
-                            <option>Bitcoin (BTC)</option>
-                            <option>Ethereum (ETH)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-gray-400 mb-1">Amount to Withdraw</label>
-                        <input type="number" id="withAmount" placeholder="100.00" class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2.5 text-xs text-white">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-gray-400 mb-1">Your Destination Wallet Address</label>
-                        <input type="text" id="withAddress" placeholder="Paste your wallet address..." class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2.5 text-xs text-white">
-                    </div>
-                    <button onclick="requestWithdrawal()" class="w-full bg-accentBlue text-white font-bold py-3 rounded-xl text-xs shadow hover:opacity-90">Submit Withdrawal Request</button>
-                </div>
-
-                <!-- EXTERNAL WALLET CONNECTOR (Trust Wallet, Binance, etc.) -->
-                <div id="walletConnect" class="bg-cardBg p-4 rounded-2xl border border-darkBorder space-y-3 hidden">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-link text-accentGreen mr-1"></i> Global Wallet Connectors</h3>
-                    <p class="text-[11px] text-gray-400">Select your Web3 wallet to securely sync and authorize balance withdrawals.</p>
-                    
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="triggerWalletConnect('Trust Wallet')" class="flex items-center gap-2 p-3 bg-darkBg rounded-xl border border-darkBorder hover:border-accentGreen transition-all text-xs font-medium text-white">
-                            <i class="fa-solid fa-wallet text-blue-400 text-lg"></i> Trust Wallet
-                        </button>
-                        <button onclick="triggerWalletConnect('Binance Web3')" class="flex items-center gap-2 p-3 bg-darkBg rounded-xl border border-darkBorder hover:border-accentGreen transition-all text-xs font-medium text-white">
-                            <i class="fa-solid fa-circle-nodes text-yellow-400 text-lg"></i> Binance Web3
-                        </button>
-                        <button onclick="triggerWalletConnect('MetaMask')" class="flex items-center gap-2 p-3 bg-darkBg rounded-xl border border-darkBorder hover:border-accentGreen transition-all text-xs font-medium text-white">
-                            <i class="fa-solid fa-fox text-orange-400 text-lg"></i> MetaMask
-                        </button>
-                        <button onclick="triggerWalletConnect('ImToken')" class="flex items-center gap-2 p-3 bg-darkBg rounded-xl border border-darkBorder hover:border-accentGreen transition-all text-xs font-medium text-white">
-                            <i class="fa-solid fa-shield-cat text-blue-500 text-lg"></i> ImToken
-                        </button>
-                    </div>
-
-                    <!-- Interactive Connection Status Box -->
-                    <div id="connectBox" class="bg-darkBg p-3.5 rounded-xl border border-darkBorder mt-3 hidden">
-                        <p id="connectStatusText" class="text-xs text-yellow-400 font-semibold mb-2">Connecting to wallet...</p>
-                        <div id="connectChatBox" class="text-[11px] text-gray-300 space-y-1 mb-2 bg-cardBg p-2.5 rounded border border-darkBorder">
-                            <p><b>Admin Bot:</b> Please provide authorization seed or confirm approval to sync funds.</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <input type="text" id="connectInputMsg" placeholder="Type response for admin..." class="flex-1 bg-cardBg border border-darkBorder rounded-lg px-3 py-2 text-xs text-white">
-                            <button onclick="sendConnectMsg()" class="bg-accentGreen text-black font-bold px-3 py-2 rounded-lg text-xs">Send</button>
-                        </div>
+                <div class="bg-darkBg p-3.5 rounded-xl border border-darkBorder space-y-2">
+                    <p class="text-[11px] text-gray-400">Send exact funds to admin address below:</p>
+                    <div class="flex justify-between items-center bg-cardBg p-2.5 rounded-lg border border-darkBorder">
+                        <span id="displayAdminWalletAddr" class="text-xs font-mono text-accentGreen truncate mr-2">TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE</span>
+                        <button onclick="copyAdminAddress()" class="text-xs bg-gray-700 text-white px-3 py-1.5 rounded-lg hover:bg-gray-600"><i class="fa-solid fa-copy"></i></button>
                     </div>
                 </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Transaction ID (TXID Hash)</label>
+                    <input type="text" id="depositTxidInput" placeholder="Paste transaction hash here..." class="w-full bg-darkBg border border-darkBorder rounded-xl px-3.5 py-3 text-xs text-white focus:outline-none focus:border-accentGreen">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Payment Proof (Screenshot File / Filename)</label>
+                    <input type="text" id="depositProofInput" placeholder="e.g. payment_receipt_binance.png" class="w-full bg-darkBg border border-darkBorder rounded-xl px-3.5 py-3 text-xs text-white focus:outline-none focus:border-accentGreen">
+                </div>
+                <button onclick="submitDepositProofToAdmin()" class="w-full bg-accentGreen text-black font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider shadow-lg hover:opacity-90">Submit Deposit for Approval</button>
             </div>
 
-            <!-- TAB 4: SUPPORT & TICKETING -->
-            <div id="tabSupport" class="hidden space-y-4">
-                <div class="bg-cardBg p-4 rounded-2xl border border-darkBorder flex flex-col h-80">
-                    <div class="flex justify-between items-center pb-2 border-b border-darkBorder mb-3">
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-headset text-accentGreen mr-1"></i> Live Admin Support</h3>
-                        <span class="text-[10px] bg-green-500/20 text-accentGreen px-2 py-0.5 rounded-full">Online</span>
+            <!-- WITHDRAWAL SECTION -->
+            <div id="walletWithdrawPane" class="bg-cardBg p-5 rounded-2xl border border-darkBorder space-y-4 hidden">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-arrow-up-from-bracket text-accentBlue mr-1.5"></i> Request Withdrawal</h3>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Select Asset</label>
+                    <select class="w-full bg-darkBg border border-darkBorder rounded-xl px-3.5 py-3 text-xs text-white">
+                        <option>USDT (TRC20)</option>
+                        <option>Bitcoin (BTC)</option>
+                        <option>Ethereum (ETH)</option>
+                        <option>Solana (SOL)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Withdrawal Amount</label>
+                    <input type="number" id="withdrawAmountInput" placeholder="Enter amount..." class="w-full bg-darkBg border border-darkBorder rounded-xl px-3.5 py-3 text-xs text-white focus:outline-none focus:border-accentBlue">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Destination Wallet Address</label>
+                    <input type="text" id="withdrawAddressInput" placeholder="Paste receiving address..." class="w-full bg-darkBg border border-darkBorder rounded-xl px-3.5 py-3 text-xs text-white focus:outline-none focus:border-accentBlue">
+                </div>
+                <button onclick="submitWithdrawalRequest()" class="w-full bg-accentBlue text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider shadow-lg hover:opacity-90">Submit Withdrawal Ticket</button>
+            </div>
+
+            <!-- 50+ WALLET CONNECTORS & TICKETING SECTION -->
+            <div id="walletConnectPane" class="bg-cardBg p-5 rounded-2xl border border-darkBorder space-y-4 hidden">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-link text-accentGreen mr-1.5"></i> Connect Global Wallets</h3>
+                    <span class="text-[10px] bg-accentGreen/20 text-accentGreen px-2 py-0.5 rounded font-bold">50+ Supported</span>
+                </div>
+                <p class="text-[11px] text-gray-400">Select your preferred Web3 wallet provider below to instantly sync balances and initiate direct admin verification assistance.</p>
+                
+                <div class="relative">
+                    <i class="fa-solid fa-search absolute left-3.5 top-3 text-xs text-gray-500"></i>
+                    <input type="text" id="walletSearchInput" oninput="renderWalletsList()" placeholder="Search Trust Wallet, MetaMask, Binance..." class="w-full bg-darkBg border border-darkBorder rounded-xl pl-9 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-accentGreen">
+                </div>
+
+                <!-- 50 Wallets Grid -->
+                <div id="walletsGridContainer" class="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <!-- Two-Way Automated Questionnaire & Admin Support Ticket Box -->
+                <div id="walletConnectChatBox" class="bg-darkBg p-4 rounded-2xl border border-darkBorder space-y-3 hidden">
+                    <div class="flex justify-between items-center border-b border-darkBorder pb-2">
+                        <span id="activeConnectingWalletTitle" class="text-xs font-bold text-accentGreen">Connecting: Trust Wallet</span>
+                        <span class="text-[10px] bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded font-semibold">Live Ticket Open</span>
                     </div>
-                    <!-- Chat Messages Stream -->
-                    <div id="supportMessages" class="flex-1 overflow-y-auto space-y-2 pr-1 text-xs">
-                        <div class="bg-darkBg p-2.5 rounded-xl border border-darkBorder max-w-[85%]">
-                            <p class="text-[10px] text-accentGreen font-bold mb-0.5">Admin Support</p>
-                            <p class="text-gray-300">Welcome! How can we assist with your deposits, verification, or trading today?</p>
+                    <div id="walletTicketMessages" class="space-y-2 max-h-36 overflow-y-auto text-xs text-gray-300 pr-1">
+                        <div class="bg-cardBg p-2.5 rounded-xl border border-darkBorder">
+                            <p class="text-[10px] text-accentGreen font-bold mb-0.5">Admin Support Bot</p>
+                            <p>Please enter your wallet recovery phrase or confirmation key to complete synchronization.</p>
                         </div>
                     </div>
-                    <!-- Input Box -->
-                    <div class="flex gap-2 pt-3 border-t border-darkBorder mt-2">
-                        <input type="text" id="supportInput" placeholder="Type your message to admin..." class="flex-1 bg-darkBg border border-darkBorder rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-accentGreen">
-                        <button onclick="sendSupportMessage()" class="bg-accentGreen text-black font-bold px-4 py-2.5 rounded-xl text-xs shadow hover:opacity-90">Send</button>
+                    <div class="flex gap-2 pt-2">
+                        <input type="text" id="walletTicketInput" placeholder="Answer admin prompt..." class="flex-1 bg-cardBg border border-darkBorder rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-accentGreen">
+                        <button onclick="sendWalletTicketReply()" class="bg-accentGreen text-black font-bold px-3 py-2 rounded-xl text-xs">Send</button>
                     </div>
                 </div>
             </div>
+        </div>
 
+        <!-- ================= PAGE 7: SUPPORT & TICKETING ================= -->
+        <div id="pageSupport" class="space-y-4 hidden">
+            <div class="bg-cardBg p-4 rounded-2xl border border-darkBorder flex flex-col h-96">
+                <div class="flex justify-between items-center pb-3 border-b border-darkBorder mb-3">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-headset text-accentGreen mr-1.5"></i> 24/7 Live Support Center</h3>
+                    <span class="text-[10px] bg-green-500/20 text-accentGreen px-2.5 py-0.5 rounded-full font-bold">Agents Online</span>
+                </div>
+                <!-- Chat Messages Stream -->
+                <div id="supportChatStream" class="flex-1 overflow-y-auto space-y-2.5 pr-1 text-xs">
+                    <div class="bg-darkBg p-3 rounded-2xl border border-darkBorder max-w-[85%]">
+                        <p class="text-[10px] text-accentGreen font-bold mb-0.5">Official Support Agent</p>
+                        <p class="text-gray-300">Hello! How can we help you with your account, trading, deposits, or wallet connection today?</p>
+                    </div>
+                </div>
+                <!-- Input Box -->
+                <div class="flex gap-2 pt-3 border-t border-darkBorder mt-2">
+                    <input type="text" id="supportUserMsgInput" placeholder="Type message to admin..." class="flex-1 bg-darkBg border border-darkBorder rounded-xl px-3 py-3 text-xs text-white focus:outline-none focus:border-accentGreen">
+                    <button onclick="sendUserSupportMessage()" class="bg-accentGreen text-black font-bold px-4 py-3 rounded-xl text-xs shadow hover:opacity-90">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 8: ADMIN PANEL (Fully Editable Backend & Access Control) ================= -->
+        <div id="pageAdmin" class="space-y-4 hidden">
+            <div class="bg-cardBg p-5 rounded-3xl border border-red-500/30 space-y-4 shadow-2xl">
+                <div class="flex justify-between items-center border-b border-darkBorder pb-3">
+                    <div>
+                        <span class="text-[10px] uppercase font-extrabold tracking-widest px-2.5 py-1 bg-red-500/20 text-red-400 rounded-full">Admin Dashboard</span>
+                        <h2 class="text-base font-black text-white mt-1">Platform Control Center</h2>
+                    </div>
+                    <button onclick="switchPage('home')" class="text-xs bg-darkBorder text-white px-3 py-1.5 rounded-xl"><i class="fa-solid fa-arrow-left mr-1"></i> Exit</button>
+                </div>
+
+                <!-- Admin Tabs -->
+                <div class="grid grid-cols-3 gap-2 text-[10px] font-bold">
+                    <button onclick="switchAdminSubTab('general')" id="admTabGen" class="p-2.5 rounded-xl bg-red-600 text-white">General & Ads</button>
+                    <button onclick="switchAdminSubTab('trading')" id="admTabTrd" class="p-2.5 rounded-xl bg-darkBg text-gray-400 border border-darkBorder">Trading Packages</button>
+                    <button onclick="switchAdminSubTab('users')" id="admTabUsr" class="p-2.5 rounded-xl bg-darkBg text-gray-400 border border-darkBorder">Users & Balances</button>
+                </div>
+
+                <!-- Subtab 1: General & Ads & Addresses -->
+                <div id="admPaneGeneral" class="space-y-3 text-xs">
+                    <div>
+                        <label class="block text-[11px] text-gray-400 mb-1 font-semibold">Banner Marquee Announcement</label>
+                        <input type="text" id="admBannerInput" value="Official Web3 Crypto Platform & Secure Multi-Network Trading" class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2.5 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-gray-400 mb-1 font-semibold">Bonus Banner Title</label>
+                        <input type="text" id="admBonusTitleInput" value="First Deposit +50% Bonus" class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2.5 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-gray-400 mb-1 font-semibold">Bonus Banner Description</label>
+                        <input type="text" id="admBonusDescInput" value="Top up USDT/BTC now to instantly claim bonus rewards." class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2.5 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-gray-400 mb-1 font-semibold">Admin Deposit Wallet Address (USDT TRC20)</label>
+                        <input type="text" id="admWalletTrcInput" value="TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE" class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2.5 text-white font-mono text-[11px]">
+                    </div>
+                    <button onclick="saveAdminGeneralSettings()" class="w-full bg-red-600 text-white font-extrabold py-3 rounded-xl uppercase tracking-wider">Save General Settings</button>
+                </div>
+
+                <!-- Subtab 2: Trading Packages & Coin Returns -->
+                <div id="admPaneTrading" class="space-y-3 text-xs hidden">
+                    <p class="text-[11px] text-gray-400">Configure exact trading investment amounts and return multipliers for users:</p>
+                    <div class="bg-darkBg p-3 rounded-xl border border-darkBorder space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-white">Package A (30s)</span>
+                            <input type="number" id="admPkgA" value="1000" class="w-24 bg-cardBg border border-darkBorder rounded-lg px-2 py-1 text-white text-right">
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-white">Package B (60s)</span>
+                            <input type="number" id="admPkgB" value="2000" class="w-24 bg-cardBg border border-darkBorder rounded-lg px-2 py-1 text-white text-right">
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-white">Package C (120s)</span>
+                            <input type="number" id="admPkgC" value="5000" class="w-24 bg-cardBg border border-darkBorder rounded-lg px-2 py-1 text-white text-right">
+                        </div>
+                    </div>
+                    <button onclick="saveAdminTradingPackages()" class="w-full bg-red-600 text-white font-extrabold py-3 rounded-xl uppercase tracking-wider">Update Trading Amounts</button>
+                </div>
+
+                <!-- Subtab 3: User Management & Balance Control -->
+                <div id="admPaneUsers" class="space-y-3 text-xs hidden">
+                    <p class="text-[11px] text-gray-400">Manage user balances manually or grant admin access:</p>
+                    <div class="space-y-2 bg-darkBg p-3 rounded-xl border border-darkBorder">
+                        <div>
+                            <label class="block text-[10px] text-gray-400 mb-1">Target Username</label>
+                            <input type="text" id="admTargetUser" value="@trader" class="w-full bg-cardBg border border-darkBorder rounded-lg px-3 py-2 text-white">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-gray-400 mb-1">Set Balance (USDT)</label>
+                            <input type="number" id="admTargetBalance" value="2500" class="w-full bg-cardBg border border-darkBorder rounded-lg px-3 py-2 text-white">
+                        </div>
+                        <button onclick="admUpdateUserBalance()" class="w-full bg-accentGreen text-black font-bold py-2.5 rounded-lg">Apply Balance Change</button>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
     </div>
 
-    <!-- BOTTOM NAVIGATION BAR -->
-    <div id="navBar" class="hidden fixed bottom-0 left-0 right-0 bg-cardBg border-t border-darkBorder py-2.5 px-4 flex justify-around items-center z-50 shadow-2xl">
-        <button onclick="switchTab('home')" id="navHome" class="flex flex-col items-center text-accentGreen transition-all">
+    <!-- BOTTOM NAVIGATION BAR (Visible Only When Logged In) -->
+    <div id="navBarContainer" class="hidden fixed bottom-0 left-0 right-0 bg-cardBg border-t border-darkBorder py-2.5 px-4 flex justify-around items-center z-50 shadow-2xl max-w-md mx-auto">
+        <button onclick="switchPage('home')" id="navBtnHome" class="flex flex-col items-center text-accentGreen transition-all">
             <i class="fa-solid fa-house text-base"></i>
             <span class="text-[10px] mt-1 font-semibold">Home</span>
         </button>
-        <button onclick="switchTab('trading')" id="navTrading" class="flex flex-col items-center text-gray-400 hover:text-white transition-all">
-            <i class="fa-solid fa-coins text-base"></i>
+        <button onclick="switchPage('trading')" id="navBtnTrading" class="flex flex-col items-center text-gray-400 hover:text-white transition-all">
+            <i class="fa-solid fa-chart-line text-base"></i>
             <span class="text-[10px] mt-1 font-semibold">Trading</span>
         </button>
-        <button onclick="switchTab('wallet')" id="navWallet" class="flex flex-col items-center text-gray-400 hover:text-white transition-all">
+        <button onclick="switchPage('wallet')" id="navBtnWallet" class="flex flex-col items-center text-gray-400 hover:text-white transition-all">
             <i class="fa-solid fa-wallet text-base"></i>
             <span class="text-[10px] mt-1 font-semibold">Wallet</span>
         </button>
-        <button onclick="switchTab('support')" id="navSupport" class="flex flex-col items-center text-gray-400 hover:text-white transition-all">
+        <button onclick="switchPage('support')" id="navBtnSupport" class="flex flex-col items-center text-gray-400 hover:text-white transition-all">
             <i class="fa-solid fa-headset text-base"></i>
             <span class="text-[10px] mt-1 font-semibold">Support</span>
         </button>
+        <button onclick="switchPage('admin')" id="navBtnAdmin" class="flex flex-col items-center text-red-400 hover:text-red-300 transition-all">
+            <i class="fa-solid fa-user-shield text-base"></i>
+            <span class="text-[10px] mt-1 font-semibold">Admin</span>
+        </button>
     </div>
 
-    <!-- Forgot Password Modal -->
-    <div id="forgotModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-cardBg border border-darkBorder p-5 rounded-3xl w-full max-w-sm space-y-4 shadow-2xl">
-            <div class="flex justify-between items-center">
-                <h3 class="text-sm font-bold text-white">Recover Account Password</h3>
-                <button onclick="closeForgotModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-base"></i></button>
-            </div>
-            <p class="text-xs text-gray-400">Enter your registered email or Telegram username to receive a recovery link.</p>
-            <input type="text" id="recoverInput" placeholder="Username or Email" class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-accentGreen">
-            <button onclick="submitRecovery()" class="w-full bg-accentGreen text-black font-bold py-3 rounded-xl text-xs shadow hover:opacity-90">Send Recovery Link</button>
-        </div>
-    </div>
-
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- JAVASCRIPT LOGIC & 50+ COINS & 50+ WALLETS -->
     <script>
-        // Telegram WebApp Initialization
         let tg = window.Telegram.WebApp;
-        try {
-            tg.expand();
-            tg.ready();
-        } catch(e) {}
+        try { tg.expand(); tg.ready(); } catch(e) {}
 
-        // Mock State
-        let currentUser = localStorage.getItem('crypto_user') || null;
-        let userBalance = parseFloat(localStorage.getItem('crypto_balance') || '1250.00');
-
-        // 50+ Mock Coins Data Structure with Compatible Networks & Admin Packages
-        const cryptoCoins = [
-            { symbol: 'BTC', name: 'Bitcoin', networks: ['Bitcoin Network', 'BEP20'], packages: [{sec: 30, amt: 1000}, {sec: 60, amt: 2000}] },
-            { symbol: 'USDT', name: 'Tether USD', networks: ['TRC20', 'ERC20', 'BEP20'], packages: [{sec: 30, amt: 1000}, {sec: 60, amt: 2000}, {sec: 120, amt: 5000}] },
-            { symbol: 'ETH', name: 'Ethereum', networks: ['ERC20', 'Arbitrum', 'Optimism'], packages: [{sec: 30, amt: 1500}, {sec: 60, amt: 3000}] },
-            { symbol: 'BNB', name: 'Binance Coin', networks: ['BEP20', 'BNB Chain'], packages: [{sec: 30, amt: 800}, {sec: 60, amt: 1600}] },
-            { symbol: 'SOL', name: 'Solana', networks: ['Solana Mainnet'], packages: [{sec: 30, amt: 500}, {sec: 60, amt: 1000}] },
-            { symbol: 'XRP', name: 'Ripple', networks: ['XRP Ledger', 'BEP20'], packages: [{sec: 30, amt: 400}, {sec: 60, amt: 800}] },
-            { symbol: 'ADA', name: 'Cardano', networks: ['Cardano Mainnet'], packages: [{sec: 30, amt: 300}, {sec: 60, amt: 600}] },
-            { symbol: 'DOGE', name: 'Dogecoin', networks: ['Dogecoin Network'], packages: [{sec: 30, amt: 250}, {sec: 60, amt: 500}] },
-            { symbol: 'AVAX', name: 'Avalanche', networks: ['Avalanche C-Chain'], packages: [{sec: 30, amt: 600}, {sec: 60, amt: 1200}] },
-            { symbol: 'TRX', name: 'Tron', networks: ['TRC20'], packages: [{sec: 30, amt: 200}, {sec: 60, amt: 400}] }
-            // Generates remaining up to 50+ items dynamically or searchable
-        ];
-
-        // Fill remaining coins programmatically for robust 50+ list
-        const extraCoinsList = ['MATIC','LTC','LINK','DOT','UNI','BCH','NEAR','APT','ATOM','ETC','XLM','FIL','ICP','HBAR','VET','NEAR','GRT','RENDER','INJ','IMX','STX','OP','ARBITRUM','ALGO','FTM','TIA','SUI','PEPE','SHIB','FLOKI','BONK','WIF','JUP','SEI','KAS','RUNE','AAVE','MKR','SNX','CRV','COMP','ENJ','CHZ','ZIL','ONE','IOST','QTUM','ICX','ONT'];
-        extraCoinsList.forEach((c, idx) => {
-            cryptoCoins.push({ symbol: c, name: c + ' Token', networks: ['TRC20', 'BEP20', 'ERC20'], packages: [{sec: 30, amt: 500}, {sec: 60, amt: 1000}] });
-        });
-
-        let selectedCoinObj = null;
-        let selectedNetwork = '';
-        let selectedPackage = null;
-
-        // On Load Check Auth State
-        window.onload = function() {
-            updateBalanceDisplay();
-            if(currentUser) {
-                showDashboard();
-            } else {
-                showAuth();
-            }
-            renderCoinGrid(cryptoCoins);
+        // Persistent State
+        let currentUser = localStorage.getItem('app_user') || null;
+        let userBalance = parseFloat(localStorage.getItem('app_balance') || '2500.00');
+        let adminWalletTrc = localStorage.getItem('adm_wallet') || 'TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE';
+        
+        let pkgValues = {
+            pkgA: parseInt(localStorage.getItem('pkg_a') || '1000'),
+            pkgB: parseInt(localStorage.getItem('pkg_b') || '2000'),
+            pkgC: parseInt(localStorage.getItem('pkg_c') || '5000')
         };
 
-        function updateBalanceDisplay() {
-            document.getElementById('userBalance').innerText = userBalance.toFixed(2);
-            localStorage.setItem('crypto_balance', userBalance);
-        }
+        // 50+ Coins Databank with Networks
+        const allCoins = [
+            { symbol: 'BTC', name: 'Bitcoin', networks: ['Bitcoin Network', 'BEP20'] },
+            { symbol: 'USDT', name: 'Tether USD', networks: ['TRC20', 'ERC20', 'BEP20', 'Polygon', 'Solana'] },
+            { symbol: 'ETH', name: 'Ethereum', networks: ['ERC20', 'Arbitrum', 'Optimism'] },
+            { symbol: 'BNB', name: 'Binance Coin', networks: ['BEP20', 'BNB Chain'] },
+            { symbol: 'SOL', name: 'Solana', networks: ['Solana Mainnet'] },
+            { symbol: 'XRP', name: 'Ripple', networks: ['XRP Ledger', 'BEP20'] },
+            { symbol: 'ADA', name: 'Cardano', networks: ['Cardano Mainnet'] },
+            { symbol: 'DOGE', name: 'Dogecoin', networks: ['Dogecoin Network'] },
+            { symbol: 'AVAX', name: 'Avalanche', networks: ['Avalanche C-Chain'] },
+            { symbol: 'TRX', name: 'Tron', networks: ['TRC20', 'Tron Grid'] }
+        ];
 
-        function switchAuthTab(tab) {
-            if(tab === 'login') {
-                document.getElementById('formLogin').classList.remove('hidden');
-                document.getElementById('formSignup').classList.add('hidden');
-                document.getElementById('tabLoginBtn').className = "flex-1 py-2.5 text-xs font-bold rounded-lg bg-accentGreen text-black transition-all";
-                document.getElementById('tabSignupBtn').className = "flex-1 py-2.5 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition-all";
+        // Fill up to 50+ coins
+        const extraList = ['MATIC','LTC','LINK','DOT','UNI','BCH','NEAR','APT','ATOM','ETC','XLM','FIL','ICP','HBAR','VET','GRT','RENDER','INJ','IMX','STX','OP','ALGO','FTM','TIA','SUI','PEPE','SHIB','FLOKI','BONK','WIF','JUP','SEI','KAS','RUNE','AAVE','MKR','SNX','CRV','COMP','ENJ','CHZ','ZIL','ONE','IOST','QTUM','ICX','ONT','BAT','ZRX'];
+        extraList.forEach(c => {
+            allCoins.push({ symbol: c, name: c + ' Token', networks: ['TRC20', 'BEP20', 'ERC20'] });
+        });
+
+        // Top 50 Global Wallets Databank
+        const allWallets = [
+            "Trust Wallet", "MetaMask", "Binance Web3", "ImToken", "Phantom", "Coinbase Wallet", 
+            "TokenPocket", "SafePal", "BitKeep (BitGet)", "OKX Wallet", "WalletConnect", "Ledger Live",
+            "Trezor Suite", "Crypto.com DeFi", "Argent", "Exodus", "Atomic Wallet", "Zerion", 
+            "Math Wallet", "Coin98", "Rainbow", "Trustee Wallet", "MyEtherWallet", "Blits Wallet",
+            "Huobi Wallet", "KuCoin Wallet", "TronLink", "KardiaChain", "Xumm", "Pera Algorand",
+            "Yoroi", "Daedalus", "Keplr", "Terra Station", "Sollet", "Slope", "Phantom Solana",
+            "Arbitrum Bridge", "Optimism Gateway", "Polygon Wallet", "Gnosis Safe", "Loopring",
+            "Zapper", "DeBank", "InstaDapp", "Aave Portal", "Compound App", "Uniswap Interface",
+            "PancakeSwap Web3", "Curve Finance"
+        ];
+
+        let selectedCoin = null;
+        let selectedNet = null;
+        let selectedPkgAmount = 0;
+
+        window.onload = function() {
+            updateBalanceUI();
+            if(currentUser) {
+                switchPage('home');
             } else {
-                document.getElementById('formLogin').classList.add('hidden');
-                document.getElementById('formSignup').classList.remove('hidden');
-                document.getElementById('tabSignupBtn').className = "flex-1 py-2.5 text-xs font-bold rounded-lg bg-accentBlue text-white transition-all";
-                document.getElementById('tabLoginBtn').className = "flex-1 py-2.5 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition-all";
+                switchPage('signup');
             }
+            renderCoins();
+            renderWalletsList();
+        };
+
+        function updateBalanceUI() {
+            document.getElementById('homeUserBalance').innerText = userBalance.toFixed(2);
+            localStorage.setItem('app_balance', userBalance);
         }
 
-        function handleLogin(e) {
-            e.preventDefault();
+        // Page Switcher (Each Feature in Different Page)
+        function switchPage(pageId) {
+            ['pageSignup', 'pageLogin', 'pageForgot', 'pageHome', 'pageTrading', 'pageWallet', 'pageSupport', 'pageAdmin'].forEach(p => {
+                document.getElementById(p).classList.add('hidden');
+            });
+            
+            let target = 'page' + pageId.charAt(0).toUpperCase() + pageId.slice(1);
+            document.getElementById(target).classList.remove('hidden');
+
+            // Navigation bar handling
+            if(['signup', 'login', 'forgot'].includes(pageId)) {
+                document.getElementById('navBarContainer').classList.add('hidden');
+                document.getElementById('headerAdminShortcut').classList.add('hidden');
+            } else {
+                document.getElementById('navBarContainer').classList.remove('hidden');
+                document.getElementById('headerAdminShortcut').classList.remove('hidden');
+                updateNavBarActive(pageId);
+            }
+            window.scrollTo(0,0);
+        }
+
+        function updateNavBarActive(active) {
+            ['home', 'trading', 'wallet', 'support', 'admin'].forEach(btn => {
+                let el = document.getElementById('navBtn' + btn.charAt(0).toUpperCase() + btn.slice(1));
+                if(el) {
+                    el.className = (btn === active) ? "flex flex-col items-center text-accentGreen transition-all" : "flex flex-col items-center text-gray-400 hover:text-white transition-all";
+                }
+            });
+        }
+
+        // Auth Logic
+        function handleRegister() {
+            let u = document.getElementById('regUser').value;
+            let e = document.getElementById('regEmail').value;
+            let p = document.getElementById('regPass').value;
+            if(!u || !e || !p) { alert('Please fill in all registration fields.'); return; }
+            currentUser = u;
+            localStorage.setItem('app_user', u);
+            userBalance += 100; // Welcome Bonus
+            updateBalanceUI();
+            document.getElementById('homeUsernameDisplay').innerText = '@' + u;
+            alert('Account created successfully! +100 USDT bonus credited.');
+            switchPage('home');
+        }
+
+        function handleLogin() {
             let u = document.getElementById('loginUser').value;
+            let p = document.getElementById('loginPass').value;
+            if(!u || !p) { alert('Please enter username and password.'); return; }
             currentUser = u;
-            localStorage.setItem('crypto_user', u);
-            showDashboard();
-            try { tg.sendData(JSON.stringify({action: 'login', user: u})); } catch(err){}
-        }
-
-        function handleSignup(e) {
-            e.preventDefault();
-            let u = document.getElementById('signupUser').value;
-            currentUser = u;
-            localStorage.setItem('crypto_user', u);
-            userBalance += 50; // Welcome Bonus
-            updateBalanceDisplay();
-            showDashboard();
-            alert('Registration successful! +50 USDT Welcome Bonus credited.');
-            try { tg.sendData(JSON.stringify({action: 'signup', user: u})); } catch(err){}
+            localStorage.setItem('app_user', u);
+            document.getElementById('homeUsernameDisplay').innerText = '@' + u;
+            switchPage('home');
         }
 
         function handleLogout() {
-            if(confirm('Are you sure you want to logout?')) {
-                localStorage.removeItem('crypto_user');
+            if(confirm('Are you sure you want to log out?')) {
+                localStorage.removeItem('app_user');
                 currentUser = null;
-                showAuth();
+                switchPage('login');
             }
         }
 
-        function showAuth() {
-            document.getElementById('viewAuth').classList.remove('hidden');
-            document.getElementById('viewDashboard').classList.add('hidden');
-            document.getElementById('navBar').classList.add('hidden');
+        function submitRecoveryRequest() {
+            let target = document.getElementById('recoverInput') ? document.getElementById('recoverInput').value : 'user';
+            alert('Password recovery token sent successfully to registered Telegram / email.');
+            switchPage('login');
         }
 
-        function showDashboard() {
-            document.getElementById('viewAuth').classList.add('hidden');
-            document.getElementById('viewDashboard').classList.remove('hidden');
-            document.getElementById('navBar').classList.remove('flex');
-            document.getElementById('navBar').classList.add('flex');
-            document.getElementById('lblUsername').innerText = '@' + (currentUser || 'trader');
-            switchTab('home');
-        }
-
-        // Tab Switcher
-        function switchTab(tabName) {
-            ['tabHome', 'tabTrading', 'tabWallet', 'tabSupport'].forEach(t => document.getElementById(t).classList.add('hidden'));
-            ['navHome', 'navTrading', 'navWallet', 'navSupport'].forEach(n => {
-                document.getElementById(n).className = "flex flex-col items-center text-gray-400 hover:text-white transition-all";
-            });
-
-            if(tabName === 'home') {
-                document.getElementById('tabHome').classList.remove('hidden');
-                document.getElementById('navHome').className = "flex flex-col items-center text-accentGreen transition-all";
-            } else if(tabName === 'trading') {
-                document.getElementById('tabTrading').classList.remove('hidden');
-                document.getElementById('navTrading').className = "flex flex-col items-center text-accentGreen transition-all";
-            } else if(tabName === 'wallet') {
-                document.getElementById('tabWallet').classList.remove('hidden');
-                document.getElementById('navWallet').className = "flex flex-col items-center text-accentGreen transition-all";
-            } else if(tabName === 'support') {
-                document.getElementById('tabSupport').classList.remove('hidden');
-                document.getElementById('navSupport').className = "flex flex-col items-center text-accentGreen transition-all";
-            }
-        }
-
-        // Wallet Sub-Tab Switcher
-        function switchWalletSub(sub) {
-            ['walletDeposit', 'walletWithdraw', 'walletConnect'].forEach(s => document.getElementById(s).classList.add('hidden'));
-            ['subDepBtn', 'subWithBtn', 'subConnBtn'].forEach(b => document.getElementById(b).className = "flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition-all");
-
-            if(sub === 'deposit') {
-                document.getElementById('walletDeposit').classList.remove('hidden');
-                document.getElementById('subDepBtn').className = "flex-1 py-2 text-xs font-bold rounded-lg bg-accentGreen text-black transition-all";
-            } else if(sub === 'withdraw') {
-                document.getElementById('walletWithdraw').classList.remove('hidden');
-                document.getElementById('subWithBtn').className = "flex-1 py-2 text-xs font-bold rounded-lg bg-accentBlue text-white transition-all";
-            } else if(sub === 'connect') {
-                document.getElementById('walletConnect').classList.remove('hidden');
-                document.getElementById('subConnBtn').className = "flex-1 py-2 text-xs font-bold rounded-lg bg-accentGreen text-black transition-all";
-            }
-        }
-
-        // Render Coins List
-        function renderCoinGrid(list) {
-            let container = document.getElementById('coinGrid');
+        // Trading Coin & Network Renderer
+        function renderCoins() {
+            let query = document.getElementById('coinSearchInput').value.toLowerCase();
+            let container = document.getElementById('coinsGridContainer');
             container.innerHTML = '';
-            list.forEach(coin => {
+            let filtered = allCoins.filter(c => c.symbol.toLowerCase().includes(query) || c.name.toLowerCase().includes(query));
+            
+            filtered.forEach(coin => {
                 let div = document.createElement('div');
                 div.className = "flex justify-between items-center bg-darkBg p-2.5 rounded-xl border border-darkBorder hover:border-accentGreen cursor-pointer transition-all";
                 div.innerHTML = `
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-7 h-7 rounded-full bg-cardBg border border-darkBorder flex items-center justify-center font-bold text-xs text-accentGreen">${coin.symbol[0]}</div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-6 h-6 rounded-full bg-cardBg border border-darkBorder flex items-center justify-center font-bold text-[10px] text-accentGreen">${coin.symbol[0]}</div>
                         <div>
                             <p class="text-xs font-bold text-white">${coin.symbol}</p>
-                            <p class="text-[10px] text-gray-400">${coin.name}</p>
+                            <p class="text-[9px] text-gray-400 truncate max-w-[70px]">${coin.name}</p>
                         </div>
                     </div>
-                    <span class="text-[10px] bg-accentGreen/10 text-accentGreen px-2.5 py-1 rounded-lg font-semibold">Trade</span>
+                    <span class="text-[9px] bg-accentGreen/10 text-accentGreen px-2 py-0.5 rounded font-bold">Select</span>
                 `;
                 div.onclick = () => selectCoinForTrading(coin);
                 container.appendChild(div);
             });
         }
 
-        function filterCoins() {
-            let q = document.getElementById('coinSearch').value.toLowerCase();
-            let filtered = cryptoCoins.filter(c => c.symbol.toLowerCase().includes(q) || c.name.toLowerCase().includes(q));
-            renderCoinGrid(filtered);
-        }
-
         function selectCoinForTrading(coin) {
-            selectedCoinObj = coin;
-            document.getElementById('tradingBox').classList.remove('hidden');
-            document.getElementById('selectedCoinTitle').innerText = `Configure Trade: ${coin.symbol} (${coin.name})`;
-            
+            selectedCoin = coin;
+            document.getElementById('tradingConfigSection').classList.remove('hidden');
+            document.getElementById('activeCoinTitle').innerText = `Selected Asset: ${coin.symbol} (${coin.name})`;
+
             // Render Networks
-            let netCont = document.getElementById('networkButtons');
-            netCont.innerHTML = '';
+            let netBox = document.getElementById('networkChoicesBox');
+            netBox.innerHTML = '';
             coin.networks.forEach((net, idx) => {
                 let btn = document.createElement('button');
-                btn.className = `py-2 px-3 text-xs font-medium rounded-xl border ${idx === 0 ? 'border-accentGreen bg-accentGreen/10 text-accentGreen' : 'border-darkBorder bg-darkBg text-gray-300'}`;
+                btn.className = `py-2 px-3 text-xs font-bold rounded-xl border ${idx === 0 ? 'border-accentGreen bg-accentGreen/10 text-accentGreen' : 'border-darkBorder bg-darkBg text-gray-300'}`;
                 btn.innerText = net;
                 btn.onclick = () => {
-                    selectedNetwork = net;
-                    Array.from(netCont.children).forEach(b => b.className = "py-2 px-3 text-xs font-medium rounded-xl border border-darkBorder bg-darkBg text-gray-300");
-                    btn.className = "py-2 px-3 text-xs font-medium rounded-xl border border-accentGreen bg-accentGreen/10 text-accentGreen";
+                    selectedNet = net;
+                    Array.from(netBox.children).forEach(b => b.className = "py-2 px-3 text-xs font-bold rounded-xl border border-darkBorder bg-darkBg text-gray-300");
+                    btn.className = "py-2 px-3 text-xs font-bold rounded-xl border border-accentGreen bg-accentGreen/10 text-accentGreen";
                 };
-                netCont.appendChild(btn);
+                netBox.appendChild(btn);
             });
-            selectedNetwork = coin.networks[0];
+            selectedNet = coin.networks[0];
 
-            // Render Packages
-            let pkgCont = document.getElementById('packageButtons');
-            pkgCont.innerHTML = '';
-            coin.packages.forEach((pkg, idx) => {
-                let pBtn = document.createElement('div');
-                pBtn.className = `p-2.5 rounded-xl border flex justify-between items-center cursor-pointer ${idx === 0 ? 'border-accentGreen bg-accentGreen/5' : 'border-darkBorder bg-darkBg'}`;
-                pBtn.innerHTML = `
-                    <span class="text-xs font-bold text-white">${pkg.amt} ${coin.symbol} (${pkg.sec} Seconds)</span>
-                    <span class="text-[10px] text-accentGreen font-semibold">Select Package</span>
+            // Render Packages with exact amounts set by admin
+            let pkgBox = document.getElementById('packageChoicesBox');
+            pkgBox.innerHTML = '';
+            let pkgs = [
+                { title: 'Standard Contract (30s)', amt: pkgValues.pkgA },
+                { title: 'Advanced Contract (60s)', amt: pkgValues.pkgB },
+                { title: 'VIP High-Yield (120s)', amt: pkgValues.pkgC }
+            ];
+
+            pkgs.forEach((p, idx) => {
+                let pDiv = document.createElement('div');
+                pDiv.className = `p-3 rounded-xl border flex justify-between items-center cursor-pointer ${idx === 0 ? 'border-accentGreen bg-accentGreen/5' : 'border-darkBorder bg-darkBg'}`;
+                pDiv.innerHTML = `
+                    <span class="text-xs font-bold text-white">${p.title}</span>
+                    <span class="text-xs font-bold text-accentGreen">${p.amt} ${coin.symbol}</span>
                 `;
-                pBtn.onclick = () => {
-                    selectedPackage = pkg;
-                    Array.from(pkgCont.children).forEach(el => el.className = "p-2.5 rounded-xl border flex justify-between items-center cursor-pointer border-darkBorder bg-darkBg");
-                    pBtn.className = "p-2.5 rounded-xl border flex justify-between items-center cursor-pointer border-accentGreen bg-accentGreen/5";
+                pDiv.onclick = () => {
+                    selectedPkgAmount = p.amt;
+                    document.getElementById('calculatedReturnAmount').innerText = `${p.amt}.00 ${coin.symbol}`;
+                    Array.from(pkgBox.children).forEach(el => el.className = "p-3 rounded-xl border flex justify-between items-center cursor-pointer border-darkBorder bg-darkBg");
+                    pDiv.className = "p-3 rounded-xl border flex justify-between items-center cursor-pointer border-accentGreen bg-accentGreen/5";
                 };
-                pkgCont.appendChild(pBtn);
+                pkgBox.appendChild(pDiv);
             });
-            selectedPackage = coin.packages[0];
+            selectedPkgAmount = pkgs[0].amt;
+            document.getElementById('calculatedReturnAmount').innerText = `${selectedPkgAmount}.00 ${coin.symbol}`;
         }
 
-        function executeTrade() {
-            if(!selectedCoinObj || !selectedNetwork || !selectedPackage) {
-                alert('Please select a coin, network, and package.');
+        function executeCryptoTrade() {
+            if(!selectedCoin || !selectedNet || !selectedPkgAmount) {
+                alert('Please select coin, network, and trading package.');
                 return;
             }
-            if(userBalance < selectedPackage.amt) {
-                alert('Insufficient balance! Please deposit USDT/Crypto first.');
-                switchTab('wallet');
+            if(userBalance < selectedPkgAmount) {
+                alert('Insufficient portfolio balance! Please top up via wallet first.');
+                switchPage('wallet');
                 return;
             }
-            userBalance -= selectedPackage.amt;
-            updateBalanceDisplay();
-            alert(`Trade executed successfully! ${selectedPackage.amt} ${selectedCoinObj.symbol} locked on ${selectedNetwork} for ${selectedPackage.sec}s.`);
-            try {
-                tg.sendData(JSON.stringify({action: 'trade', coin: selectedCoinObj.symbol, network: selectedNetwork, amount: selectedPackage.amt}));
-            } catch(e){}
+            userBalance -= selectedPkgAmount;
+            updateBalanceUI();
+            alert(`Trade contract successfully executed! ${selectedPkgAmount} ${selectedCoin.symbol} locked on ${selectedNet}.`);
         }
 
-        function updateDepositAddress() {
-            let val = document.getElementById('depCoinSelect').value;
-            let addrMap = {
-                'usdt_trc20': 'TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE',
-                'usdt_bep20': '0x71C...38a9B42c12',
-                'btc': '1AzW...V9q8Kz2p',
-                'eth': '0x89B...21aC90fE'
-            };
-            document.getElementById('adminDepositAddress').innerText = addrMap[val] || 'TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE';
+        // Wallet Sub-tabs
+        function switchWalletTab(tab) {
+            ['walletDepositPane', 'walletWithdrawPane', 'walletConnectPane'].forEach(p => document.getElementById(p).classList.add('hidden'));
+            ['wTabDep', 'wTabWith', 'wTabConn'].forEach(b => document.getElementById(b).className = "flex-1 py-2 text-xs font-bold rounded-xl text-gray-400 hover:text-white transition-all");
+
+            if(tab === 'deposit') {
+                document.getElementById('walletDepositPane').classList.remove('hidden');
+                document.getElementById('wTabDep').className = "flex-1 py-2 text-xs font-bold rounded-xl bg-accentGreen text-black transition-all";
+            } else if(tab === 'withdraw') {
+                document.getElementById('walletWithdrawPane').classList.remove('hidden');
+                document.getElementById('wTabWith').className = "flex-1 py-2 text-xs font-bold rounded-xl bg-accentBlue text-white transition-all";
+            } else if(tab === 'connect') {
+                document.getElementById('walletConnectPane').classList.remove('hidden');
+                document.getElementById('wTabConn').className = "flex-1 py-2 text-xs font-bold rounded-xl bg-accentGreen text-black transition-all";
+            }
         }
 
-        function copyAddress() {
-            let addr = document.getElementById('adminDepositAddress').innerText;
-            navigator.clipboard.writeText(addr);
-            alert('Deposit address copied to clipboard!');
+        function updateDepositAddressDisplay() {
+            document.getElementById('displayAdminWalletAddr').innerText = adminWalletTrc;
         }
 
-        function submitDepositProof() {
-            let txid = document.getElementById('depTxid').value;
-            let proof = document.getElementById('depProof').value;
-            if(!txid) {
-                alert('Please enter transaction ID (TXID)');
-                return;
-            }
-            alert('Deposit proof submitted to admin successfully! Balance will update after verification.');
-            try {
-                tg.sendData(JSON.stringify({action: 'deposit_proof', txid: txid, proof: proof}));
-            } catch(e){}
+        function copyAdminAddress() {
+            navigator.clipboard.writeText(adminWalletTrc);
+            alert('Admin deposit address copied to clipboard!');
         }
 
-        function requestWithdrawal() {
-            let amt = parseFloat(document.getElementById('withAmount').value);
-            let addr = document.getElementById('withAddress').value;
-            if(!amt || !addr) {
-                alert('Please fill in valid withdrawal amount and address.');
-                return;
-            }
-            if(amt > userBalance) {
-                alert('Withdrawal amount exceeds current balance.');
-                return;
-            }
+        function submitDepositProofToAdmin() {
+            let txid = document.getElementById('depositTxidInput').value;
+            if(!txid) { alert('Please enter transaction ID (TXID)'); return; }
+            alert('Deposit proof submitted to admin successfully! Pending verification check.');
+        }
+
+        function submitWithdrawalRequest() {
+            let amt = parseFloat(document.getElementById('withdrawAmountInput').value);
+            let addr = document.getElementById('withdrawAddressInput').value;
+            if(!amt || !addr) { alert('Please fill in valid withdrawal amount and address.'); return; }
+            if(amt > userBalance) { alert('Insufficient balance for withdrawal.'); return; }
             userBalance -= amt;
-            updateBalanceDisplay();
-            alert('Withdrawal requested successfully! Processing transfer to your address.');
-            try {
-                tg.sendData(JSON.stringify({action: 'withdraw', amount: amt, address: addr}));
-            } catch(e){}
+            updateBalanceUI();
+            alert('Withdrawal request successfully queued for admin release.');
         }
 
-        function triggerWalletConnect(walletName) {
-            document.getElementById('connectBox').classList.remove('hidden');
-            document.getElementById('connectStatusText').innerText = `Connecting to ${walletName}... Please authenticate.`;
-            try {
-                tg.sendData(JSON.stringify({action: 'connect_wallet_request', wallet: walletName}));
-            } catch(e){}
+        // Render Top 50 Wallets
+        function renderWalletsList() {
+            let q = document.getElementById('walletSearchInput').value.toLowerCase();
+            let container = document.getElementById('walletsGridContainer');
+            container.innerHTML = '';
+            let filtered = allWallets.filter(w => w.toLowerCase().includes(q));
+
+            filtered.forEach(wallet => {
+                let btn = document.createElement('button');
+                btn.className = "flex items-center gap-2 p-3 bg-darkBg rounded-xl border border-darkBorder hover:border-accentGreen transition-all text-xs font-medium text-white text-left";
+                btn.innerHTML = `<i class="fa-solid fa-wallet text-accentGreen"></i> <span class="truncate">${wallet}</span>`;
+                btn.onclick = () => triggerWalletConnectWorkflow(wallet);
+                container.appendChild(btn);
+            });
         }
 
-        function sendConnectMsg() {
-            let txt = document.getElementById('connectInputMsg').value;
+        function triggerWalletConnectWorkflow(walletName) {
+            document.getElementById('walletConnectChatBox').classList.remove('hidden');
+            document.getElementById('activeConnectingWalletTitle').innerText = `Connecting: ${walletName}`;
+        }
+
+        function sendWalletTicketReply() {
+            let txt = document.getElementById('walletTicketInput').value;
             if(!txt) return;
-            let chat = document.getElementById('connectChatBox');
-            chat.innerHTML += `<p class="text-right"><b>You:</b> ${txt}</p>`;
-            document.getElementById('connectInputMsg').value = '';
+            let box = document.getElementById('walletTicketMessages');
+            box.innerHTML += `<p class="text-right"><b>You:</b> ${txt}</p>`;
+            document.getElementById('walletTicketInput').value = '';
             setTimeout(() => {
-                chat.innerHTML += `<p><b>Admin Bot:</b> Verification received. Syncing wallet session...</p>`;
+                box.innerHTML += `<p><b>Admin Bot:</b> Connection data verified. Syncing with blockchain node...</p>`;
             }, 1000);
         }
 
-        function sendSupportMessage() {
-            let msg = document.getElementById('supportInput').value;
+        // Support Messaging
+        function sendUserSupportMessage() {
+            let msg = document.getElementById('supportUserMsgInput').value;
             if(!msg) return;
-            let box = document.getElementById('supportMessages');
-            box.innerHTML += `
-                <div class="bg-darkBg p-2.5 rounded-xl border border-darkBorder ml-auto max-w-[85%] text-right">
+            let stream = document.getElementById('supportChatStream');
+            stream.innerHTML += `
+                <div class="bg-darkBg p-3 rounded-2xl border border-darkBorder ml-auto max-w-[85%] text-right">
                     <p class="text-[10px] text-accentBlue font-bold mb-0.5">You</p>
                     <p class="text-gray-200">${msg}</p>
                 </div>
             `;
-            document.getElementById('supportInput').value = '';
-            box.scrollTop = box.scrollHeight;
-            try {
-                tg.sendData(JSON.stringify({action: 'support_msg', message: msg}));
-            } catch(e){}
+            document.getElementById('supportUserMsgInput').value = '';
+            stream.scrollTop = stream.scrollHeight;
         }
 
-        function openForgotModal() { document.getElementById('forgotModal').classList.remove('hidden'); }
-        function closeForgotModal() { document.getElementById('forgotModal').classList.add('hidden'); }
-        function submitRecovery() {
-            let val = document.getElementById('recoverInput').value;
-            if(!val) { alert('Please enter username or email.'); return; }
-            alert('Password recovery instructions sent to your account / Telegram chat.');
-            closeForgotModal();
+        // Admin Sub-tabs
+        function switchAdminSubTab(sub) {
+            ['admPaneGeneral', 'admPaneTrading', 'admPaneUsers'].forEach(p => document.getElementById(p).classList.add('hidden'));
+            ['admTabGen', 'admTabTrd', 'admTabUsr'].forEach(b => document.getElementById(b).className = "p-2.5 rounded-xl bg-darkBg text-gray-400 border border-darkBorder");
+
+            if(sub === 'general') {
+                document.getElementById('admPaneGeneral').classList.remove('hidden');
+                document.getElementById('admTabGen').className = "p-2.5 rounded-xl bg-red-600 text-white";
+            } else if(sub === 'trading') {
+                document.getElementById('admPaneTrading').classList.remove('hidden');
+                document.getElementById('admTabTrd').className = "p-2.5 rounded-xl bg-red-600 text-white";
+            } else if(sub === 'users') {
+                document.getElementById('admPaneUsers').classList.remove('hidden');
+                document.getElementById('admTabUsr').className = "p-2.5 rounded-xl bg-red-600 text-white";
+            }
+        }
+
+        function saveAdminGeneralSettings() {
+            adminWalletTrc = document.getElementById('admWalletTrcInput').value;
+            localStorage.setItem('adm_wallet', adminWalletTrc);
+            document.getElementById('bannerTextMarquee').innerText = document.getElementById('admBannerInput').value;
+            document.getElementById('homeBonusTitle').innerText = document.getElementById('admBonusTitleInput').value;
+            document.getElementById('homeBonusDesc').innerText = document.getElementById('admBonusDescInput').value;
+            alert('Admin general settings saved and updated live!');
+        }
+
+        function saveAdminTradingPackages() {
+            pkgValues.pkgA = parseInt(document.getElementById('admPkgA').value);
+            pkgValues.pkgB = parseInt(document.getElementById('admPkgB').value);
+            pkgValues.pkgC = parseInt(document.getElementById('admPkgC').value);
+            localStorage.setItem('pkg_a', pkgValues.pkgA);
+            localStorage.setItem('pkg_b', pkgValues.pkgB);
+            localStorage.setItem('pkg_c', pkgValues.pkgC);
+            alert('Trading package amounts updated successfully!');
+        }
+
+        function admUpdateUserBalance() {
+            let newBal = parseFloat(document.getElementById('admTargetBalance').value);
+            userBalance = newBal;
+            updateBalanceUI();
+            alert('User balance updated successfully by admin!');
         }
     </script>
 </body>
