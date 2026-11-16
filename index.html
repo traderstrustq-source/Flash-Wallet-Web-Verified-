@@ -1,651 +1,888 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Global Crypto & Web3 Marketplace Pro</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Telegram Web App SDK -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#090d16',
-                        cardBg: '#111827',
-                        cardHover: '#1f2937',
-                        accentGreen: '#10b981',
-                        accentBlue: '#3b82f6',
-                        accentPurple: '#8b5cf6',
-                        darkBorder: '#1f293d'
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { background-color: #090d16; color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Flash Wallet</title>
+<style>
+#boot{position:fixed;left:0;right:0;bottom:110px;text-align:center;font-size:13px;line-height:1.6;padding:0 22px}
+body.auth-mode #boot{bottom:150px}
+#boot .b1{font-size:26px;font-weight:900;letter-spacing:-.5px;margin-bottom:8px}
+#boot .b2{opacity:.75}
+#boot .b3{margin-top:14px;font-weight:800}
+#boot .b3 a{display:block;margin-top:8px;padding:12px;border-radius:14px;background:#b9f65b;color:#14210b;font-weight:800;text-decoration:none}
+body.auth-mode #boot .b3 a{background:#1749dc;color:#fff}
+:root{--bg:#05060a;--card:#0f121a;--line:#1c2130;--txt:#e8eaf2;--mut:#94a3b8;--acc:#3b82f6;--acc2:#22c55e;--warn:#f59e0b;--bad:#ef4444;--r:18px;--shadow:0 10px 40px rgba(0,0,0,.55)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+#app{width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);margin:0 auto}
+.top{position:sticky;top:0;z-index:30;background:rgba(5,6,10,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.top h1{font-size:18px;font-weight:800;letter-spacing:.4px}
+.top .tg{font-size:11px;color:var(--mut);font-weight:600}
+.hero{padding:26px 20px 10px;text-align:center;background:radial-gradient(600px circle at 50% -10%, rgba(59,130,246,.16), transparent 60%);border-bottom:1px solid var(--line)}
+.logo{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,#3b82f6,#22c55e,#7c3aed);display:inline-flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:14px;box-shadow:0 8px 24px rgba(59,130,246,.45)}
+.brand{font-size:28px;font-weight:900;letter-spacing:-.5px;margin-bottom:8px}
+.brand span{color:var(--acc)}
+.hero p{color:var(--mut);font-size:14px;line-height:1.6;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin:16px 20px 0}
+.card h2{font-size:15px;font-weight:800;margin-bottom:14px;letter-spacing:-.2px}
+label.lab{display:block;font-size:11px;color:var(--mut);margin-bottom:6px;font-weight:700;letter-spacing:.5px}
+.input{width:100%;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:#0b0e16;color:var(--txt);font-size:15px;margin-bottom:12px;outline:none}
+.input:focus{border-color:var(--acc);box-shadow:0 0 0 4px rgba(59,130,246,.15)}
+.small{font-size:11.5px;color:var(--mut);text-align:center;margin-top:6px}
+.small a{color:var(--acc);text-decoration:none;font-weight:700}
+.divider{height:1px;background:var(--line);margin:18px 0;opacity:.4}
+.btn{display:block;width:100%;padding:14px;border-radius:14px;border:none;color:#fff;font-size:15px;font-weight:700;text-align:center;cursor:pointer;text-decoration:none;letter-spacing:.3px}
+.btn.primary{background:linear-gradient(135deg,#3b82f6,#2563eb);box-shadow:0 8px 24px rgba(59,130,246,.45)}
+.btn.good{background:linear-gradient(135deg,#22c55e,#16a34a)}
+.btn.secondary{background:#141823;color:var(--txt);border:1px solid var(--line)}
+.btn:disabled{opacity:.55;cursor:default}
+.row{display:flex;gap:10px}
+.row > *{flex:1}
+.center{text-align:center}
+.mt{margin-top:12px}
+.mb{margin-bottom:12px}
+.hidden{display:none!important}
+.dash{flex:1;overflow-y:auto;padding-bottom:110px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+.tile .t{font-size:11px;color:var(--mut);font-weight:700;letter-spacing:.4px;text-transform:uppercase;margin-bottom:6px}
+.tile .v{font-size:26px;font-weight:800}
+.tile .sub{font-size:11.5px;color:var(--mut);margin-top:4px}
+.stat{display:flex;justify-content:space-between;font-size:12px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.stat:last-child{border-bottom:none}
+.stat b{color:#fff}
+.pill{display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(59,130,246,.12);color:#7eb3ff;border:1px solid rgba(59,130,246,.28)}
+.pill.green{background:rgba(34,197,94,.12);color:#4ade80;border-color:rgba(34,197,94,.28)}
+.list{display:flex;flex-direction:column;gap:10px}
+.item{display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;background:var(--card);border:1px solid var(--line);cursor:pointer}
+.item .ic{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--line);color:#fff;font-size:17px;flex-shrink:0}
+.item .nm{font-size:15px;font-weight:700;flex:1}
+.item .sb{font-size:12px;color:var(--mut)}
+.item .ar{color:var(--mut)}
+.net{display:inline-block;padding:5px 11px;border-radius:10px;background:var(--line);font-size:12px;margin:4px 4px 0 0;cursor:pointer}
+.net.on{background:var(--acc);color:#fff}
+.plan{border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;background:var(--card)}
+.plan.sel{border-color:var(--acc);background:linear-gradient(180deg,rgba(59,130,246,.08),var(--card))}
+.plan .amt{font-size:17px;font-weight:800}
+.plan .tm{font-size:12px;color:var(--mut)}
+.plan .opts{display:flex;gap:8px;margin-top:10px}
+.chat{display:flex;flex-direction:column;gap:10px}
+.msg{max-width:85%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.5}
+.msg.u{align-self:flex-end;background:var(--acc);color:#fff;border-bottom-right-radius:4px}
+.msg.a{align-self:flex-start;background:#141823;border:1px solid var(--line);border-bottom-left-radius:4px}
+.wal{display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;background:var(--card);border:1px solid var(--line);margin-bottom:10px;cursor:pointer}
+.wal .ic{width:38px;height:38px;border-radius:12px;background:var(--line);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.wal .nm{font-size:14px;font-weight:700;flex:1}
+.wal .sb{font-size:11px;color:var(--mut)}
+.ev{display:flex;gap:10px;align-items:center;padding:12px;border-radius:16px;background:var(--card);border:1px solid var(--line);margin-bottom:10px}
+.ev .d{font-size:11px;color:var(--mut)}
+.ev .t{font-size:14px;font-weight:700}
+.tabs{position:sticky;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(5,6,10,.95);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding-top:8px}
+.tab{padding:10px 0 14px;text-align:center;font-size:10px;color:var(--mut);cursor:pointer;position:relative}
+.tab .i{font-size:20px;display:block;margin-bottom:4px}
+.tab.on{color:var(--acc)}
+.tab.on .i{color:var(--acc)}
+.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#0f121a;border:1px solid var(--line);padding:10px 16px;border-radius:14px;font-size:13px;z-index:99;max-width:86%}
+.auth{max-width:410px;margin:0 auto;padding:24px 20px 120px}
+.auth .hero{padding-top:4px}
+.auth-card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px 22px;margin:20px 20px 0}
+.auth-card h2{font-size:16px;font-weight:800;margin-bottom:8px}
+.auth-sub{font-size:12.5px;color:var(--mut);margin-bottom:22px;line-height:1.5}
+.form-group{margin-bottom:14px}
+.err{color:var(--bad);font-size:12px;margin-top:6px;text-align:center}
+/* ---------- AUTH MODE (light, like the sign-in mock) ---------- */
+body.auth-mode{background:#eef3ff;color:#0f1b3d}
+body.auth-mode #app{background:#eef3ff}
+body.auth-mode .top{display:none}
+body.auth-mode .tabs{display:none}
+body.auth-mode .auth{padding:0;max-width:100%}
+body.auth-mode .hero{background:transparent;border-bottom:none;padding:34px 22px 6px;text-align:center}
+body.auth-mode .hero .logo{background:linear-gradient(135deg,#3b82f6,#1d4ed8);box-shadow:0 10px 26px rgba(37,99,235,.35)}
+body.auth-mode .hero .brand{color:#0f1b3d;font-size:26px}
+body.auth-mode .hero .brand span{color:#2563eb}
+body.auth-mode .hero p{color:#5a6b8c;font-size:13.5px;margin-bottom:0}
+body.auth-mode .auth-card{background:#ffffff;border:1px solid #ffffff;border-radius:26px;padding:26px 22px;margin:20px 18px 0;box-shadow:0 18px 50px rgba(37,99,235,.14)}
+body.auth-mode .auth-card h2{color:#0f1b3d}
+body.auth-mode label.lab{color:#7b89a8}
+body.auth-mode .input{background:#f2f6ff;border:1px solid #ffffff;color:#0f1b3d;border-radius:16px}
+body.auth-mode .input:focus{border-color:#3187ff;box-shadow:0 0 0 4px rgba(49,135,255,.18)}
+body.auth-mode .btn.primary{background:linear-gradient(90deg,#3187ff,#1749dc);color:#fff;border-radius:18px;box-shadow:0 12px 28px rgba(23,73,220,.32)}
+body.auth-mode .btn.secondary{background:#ffffff;color:#1749dc;border:1px solid #dbe6ff;border-radius:16px}
+body.auth-mode .btn.good{background:linear-gradient(90deg,#3187ff,#1749dc);color:#fff}
+body.auth-mode .small{color:#7b89a8}
+body.auth-mode .divider{background:#dbe6ff;opacity:1}
+body.auth-mode .err{color:#dc2626}
+body.auth-mode .toast{background:#0f1b3d;border-color:#0f1b3d;color:#fff}
+
+/* ---------- WALLET MODE (dark, like the dashboard mock) ---------- */
+body.wallet-mode{background:#070a08;color:#e9f2e6}
+body.wallet-mode #app{background:#070a08}
+body.wallet-mode .top{background:rgba(7,10,8,.94);border-bottom:1px solid #1e2a20}
+body.wallet-mode .top h1{color:#eaf7e4}
+body.wallet-mode .hero{background:radial-gradient(600px circle at 50% -20%, rgba(185,246,91,.16), transparent 62%);border-bottom:1px solid #1e2a20}
+body.wallet-mode .hero .brand{color:#f2fbea}
+body.wallet-mode .card{background:#101711;border:1px solid #22301f;border-radius:20px}
+body.wallet-mode .card h2{color:#eaf7e4}
+body.wallet-mode label.lab{color:#7f9b83}
+body.wallet-mode .input{background:#0b120c;border:1px solid #22301f;color:#eaf7e4;border-radius:16px}
+body.wallet-mode .btn.primary{background:#b9f65b;color:#14210b;border-color:#b9f65b;box-shadow:none}
+body.wallet-mode .btn.good{background:#b9f65b;color:#14210b}
+body.wallet-mode .btn.secondary{background:#141d15;color:#eaf7e4;border:1px solid #22301f}
+body.wallet-mode .tile{background:#101711;border:1px solid #22301f;border-radius:20px}
+body.wallet-mode .tile .v{color:#d7ff8a}
+body.wallet-mode .item{background:#101711;border:1px solid #22301f}
+body.wallet-mode .wal{background:#101711;border:1px solid #22301f}
+body.wallet-mode .ev{background:#101711;border:1px solid #22301f}
+body.wallet-mode .plan{background:#101711;border:1px solid #22301f}
+body.wallet-mode .plan.sel{border-color:#b9f65b}
+body.wallet-mode .net{background:#16201a;border:1px solid #22301f;color:#cfe3cd}
+body.wallet-mode .net.on{background:#b9f65b;color:#14210b;border-color:#b9f65b}
+body.wallet-mode .msg.a{background:#141d15;border:1px solid #22301f;color:#eaf7e4}
+body.wallet-mode .msg.u{background:#b9f65b;color:#14210b}
+body.wallet-mode .stat b{color:#d7ff8a}
+body.wallet-mode .pill{background:rgba(185,246,91,.12);color:#c9f77f;border-color:rgba(185,246,91,.3)}
+body.wallet-mode .pill.green{background:rgba(185,246,91,.18);color:#d7ff8a;border-color:rgba(185,246,91,.35)}
+body.wallet-mode .tabs{background:rgba(7,10,8,.96);border-top:1px solid #1e2a20}
+body.wallet-mode .tab.on{color:#b9f65b}
+body.wallet-mode .tab.on .i{color:#b9f65b}
+body.wallet-mode .toast{background:#16201a;border-color:#2c3d2b;color:#eaf7e4}
+</style>
 </head>
-<body class="h-full flex flex-col justify-between selection:bg-accentGreen selection:text-black">
+<body>
+<div id="app">
+  <div class="top">
+    <h1 id="ttl">Flash Wallet</h1>
+    <div class="tg" id="tg"></div>
+  </div>
+  <div class="auth" id="view"></div>
+  <div class="tabs" id="tabs"></div>
+</div>
+<div id="boot"><div class="b1">FlashWallet</div><div class="b2">Loading your wallet...</div><div class="b3" id="bootbox"></div></div>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+var APP_SECRET = "fw_live_7Kq2Vn8Rt5Xw9Ym3Zb6Pd4Ls";
+var apiBase = "https://api.telebotcreator.com/new-webhook?data=gAAAAABq-trQ7_-0YpkRxlm8_JTozMEDXQS7poUVS3GV7MTsSHKy-63h-b1BfstYocqdJjGv8fw-su9jIjUHtxjfXIIM58ncgV-jsHoQ8fKmMSYh2OFPkmexy3jPkKK9tiuvq1dCodl46qew-69ixe1sTz4UtNHn3UyjqD3v8vC3JOnrPNfUA5W1o2st3T4hOkdiJmcZseba";
+var tgId = null;
+var tgUname = "";
+var me = null;
+var bootData = null;
+var sel = {coin:"USDT", net:"TRC20", plan:null, wallet:""};
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function tgUser(){
+  try{ if(window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe){ return Telegram.WebApp.initDataUnsafe.user || null; } }catch(e){}
+  return null;
+}
+function api(action, data, cb){
+  var payload = data || {};
+  payload.action = action;
+  payload.app_key = APP_SECRET;
+  if(me && me.tid){ payload.tid = me.tid; payload.token = me.token; }
+  var qs = "";
+  var k;
+  for(k in payload){
+    if(!payload.hasOwnProperty(k)){ continue; }
+    var v = payload[k];
+    if(v === null || v === undefined){ v = ""; }
+    qs += "&" + encodeURIComponent(k) + "=" + encodeURIComponent(String(v));
+  }
+  if(qs){ qs = qs.slice(1); }
+  var base = apiBase;
+  if(base.indexOf("?") >= 0){ base = base + "&" + qs; }
+  else { base = base + "?" + qs; }
 
-    <!-- Top Status Banner -->
-    <div id="topBanner" class="bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-600 text-white text-[11px] font-bold py-2 px-4 text-center truncate shadow-lg flex items-center justify-between">
-        <span id="bannerTextMarquee"><i class="fa-solid fa-bullhorn mr-2"></i> Official Web3 Crypto Platform & Secure Multi-Network Coins</span>
-        <span id="headerAdminShortcut" class="hidden bg-black/40 px-2 py-0.5 rounded text-[10px] cursor-pointer" onclick="switchPage('admin')"><i class="fa-solid fa-lock mr-1"></i> Admin</span>
-    </div>
+  function parse(txt, status){
+    var j = null;
+    try{ j = JSON.parse(txt); }catch(e){ j = null; }
+    if(j && typeof j === "object"){ return j; }
+    return {ok:false, error:"bad_response", http:status, text:String(txt).slice(0,150)};
+  }
 
-    <!-- MAIN APP WRAPPER -->
-    <div id="appContainer" class="flex-1 overflow-y-auto hide-scrollbar pb-24 p-4 max-w-md mx-auto w-full">
+  var done = false;
+  function finish(j){ if(done){ return; } done = true; cb(j); }
 
-        <!-- ================= PAGE 1: SIGN UP ================= -->
-        <div id="pageSignup" class="space-y-6 pt-4">
-            <div class="text-center space-y-2">
-                <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-cardBg border border-darkBorder text-accentGreen text-4xl shadow-2xl">
-                    <i class="fa-solid fa-shield-cat"></i>
-                </div>
-                <h1 class="text-2xl font-black text-white tracking-wider">CREATE ACCOUNT</h1>
-                <p class="text-xs text-gray-400">Join the Next-Gen Global Crypto & Web3 Portal</p>
-            </div>
+  if(qs.length > 1200){
+    try{
+      var big = JSON.stringify(payload).replace(/'/g, "\u0027");
+      fetch(apiBase, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain"}, body: big});
+    }catch(e){}
+    cb({ok:true, sent:"blind"});
+    return;
+  }
 
-            <div class="bg-cardBg p-6 rounded-3xl border border-darkBorder shadow-2xl space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Username</label>
-                    <input type="text" id="regUser" placeholder="e.g. crypto_master" class="w-full bg-darkBg border border-darkBorder rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accentGreen transition-colors">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Email Address</label>
-                    <input type="email" id="regEmail" placeholder="name@example.com" class="w-full bg-darkBg border border-darkBorder rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accentGreen transition-colors">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Password</label>
-                    <input type="password" id="regPass" placeholder="••••••••" class="w-full bg-darkBg border border-darkBorder rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accentGreen transition-colors">
-                </div>
-                <button onclick="handleRegister()" class="w-full bg-accentGreen text-black font-extrabold py-3.5 rounded-2xl shadow-xl hover:opacity-90 active:scale-[0.98] transition-all text-sm uppercase tracking-wider">Register & Claim Bonus</button>
-                <div class="text-center pt-2">
-                    <button onclick="switchPage('login')" class="text-xs text-accentBlue hover:underline font-semibold">Already have an account? Sign In</button>
-                </div>
-            </div>
-        </div>
+  if(window.fetch){
+    fetch(base, {method:"GET", cache:"no-store"}).then(function(r){
+      return r.text().then(function(t){ return {s:r.status, t:t}; });
+    }).then(function(o){ finish(parse(o.t, o.s)); }).catch(function(){ xbk(); });
+  } else {
+    xbk();
+  }
 
-        <!-- ================= PAGE 2: LOGIN ================= -->
-        <div id="pageLogin" class="space-y-6 pt-4 hidden">
-            <div class="text-center space-y-2">
-                <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-cardBg border border-darkBorder text-accentBlue text-4xl shadow-2xl">
-                    <i class="fa-solid fa-right-to-bracket"></i>
-                </div>
-                <h1 class="text-2xl font-black text-white tracking-wider">WELCOME BACK</h1>
-                <p class="text-xs text-gray-400">Secure Authentication & Portfolio Access</p>
-            </div>
+  function xbk(){
+    var x = new XMLHttpRequest();
+    x.open("GET", base, true);
+    x.timeout = 25000;
+    x.onreadystatechange = function(){
+      if(x.readyState==4){ finish(parse(x.responseText, x.status)); }
+    };
+    x.onerror = function(){ finish({ok:false, error:"network"}); };
+    x.send();
+  }
+}
+function toast(t){
+  var d = document.createElement("div");
+  d.className = "toast"; d.textContent = t;
+  document.body.appendChild(d);
+  setTimeout(function(){ d.remove(); }, 2600);
+}
+function go(screen){
+  var bb = $("boot");
+  if(bb){ bb.style.display = "none"; }
+  document.body.className = (screen=="landing" || screen=="login" || screen=="signup" || screen=="forgot" || screen=="recover") ? "auth-mode" : "wallet-mode";
+  var v = $("view");
+  if(screen=="landing") renderLanding(v);
+  else if(screen=="home") renderHome(v);
+  else if(screen=="trade") renderTrade(v);
+  else if(screen=="wallet") renderWallet(v);
+  else if(screen=="connect") renderConnect(v);
+  else if(screen=="support") renderSupport(v);
+  else if(screen=="login") renderLogin(v);
+  else if(screen=="signup") renderSignup(v);
+  else if(screen=="forgot") renderForgot(v);
+  else if(screen=="recover") renderRecover(v);
+  else if(screen=="admin") renderAdmin(v);
+  setTab(screen);
+  window.scrollTo(0,0);
+}
+function setTab(s){
+  var tabs = [["home","Home"],["trade","Trade"],["wallet","Wallet"],["connect","Wallet"],["support","Support"]];
+  var t = $("tabs");
+  if(!me){ t.innerHTML=""; return; }
+  var h = "";
+  var ics = ["🏠","💱","💳","🔗","🛟"];
+  for(var i=0;i<tabs.length;i++){
+    h += '<div class="tab'+(s==tabs[i][0]?" on":"")+'" onclick="go(\''+tabs[i][0]+'\')"><span class="i">'+ics[i]+'</span>'+tabs[i][1]+'</div>';
+  }
+  t.innerHTML = h;
+}
+function requireAuth(){
+  if(!me){ go("login"); return false; }
+  return true;
+}
+function errShow(el, msg){
+  var e = $(el);
+  if(e){ e.textContent = msg; e.style.display = "block"; }
+}
+function hideErr(el){
+  var e = $(el);
+  if(e){ e.style.display = "none"; }
+}
+function renderLogin(v){
+  $("tg").textContent = "";
+  v.innerHTML =
+  '<div class="hero"><div class="logo">⚡</div><div class="brand">Flash<span>Wallet</span></div>'+
+  '<p style="margin-bottom:24px">Sign in to trade 50+ coins, deposit, withdraw and connect your wallet.</p>'+
+  '<div class="auth-card">'+
+  '<div class="form-group"><label class="lab">Username or email</label><input class="input" id="li_u" placeholder="your username or email"></div>'+
+  '<div class="form-group"><label class="lab">Password</label><input class="input" id="li_p" type="password" placeholder="your password"></div>'+
+  '<div class="err" id="li_err" style="display:none"></div>'+
+  '<button class="btn primary" onclick="doLogin()">Sign in</button>'+
+  '<div class="row mt"><a class="btn secondary" onclick="go(\'forgot\')">Forgot password</a><a class="btn secondary" onclick="go(\'recover\')">Recover account</a></div>'+
+  '<div class="divider"></div><div class="center small">No account yet? <a onclick="go(\'signup\')" style="color:var(--acc);font-weight:700">Create account</a></div>'+
+  '</div>';
+}
+function renderSignup(v){
+  var su = tgId ? ("tg_"+tgId) : "";
+  v.innerHTML =
+  '<div class="hero"><div class="logo">⚡</div><div class="brand">Flash<span>Wallet</span></div>'+
+  '<p style="margin-bottom:24px">Create your account. Your Telegram id is linked automatically so the admin can help you.</p>'+
+  '<div class="auth-card">'+
+  '<div class="form-group"><label class="lab">Username</label><input class="input" id="su_u" placeholder="choose a username" value="'+esc(su)+'"></div>'+
+  '<div class="form-group"><label class="lab">Password</label><input class="input" id="su_p" type="password" placeholder="any password you remember"></div>'+
+  '<div class="form-group"><label class="lab">Email (optional)</label><input class="input" id="su_e" placeholder="you@mail.com"></div>'+
+  '<div class="err" id="su_err" style="display:none"></div>'+
+  '<button class="btn primary" onclick="doSignup()">Create account</button>'+
+  '<div class="divider"></div><div class="center small">Already have an account? <a onclick="go(\'login')" style="color:var(--acc);font-weight:700">Sign in</a></div>'+
+  '</div>';
+}
+function renderForgot(v){
+  v.innerHTML =
+  '<div class="hero"><div class="logo">⚡</div><div class="brand">Flash<span>Wallet</span></div>'+
+  '<p style="margin-bottom:24px">Forgot your password?</p>'+
+  '<div class="auth-card">'+
+  '<div class="form-group"><label class="lab">Username or email</label><input class="input" id="fg_k" placeholder="your username / email"></div>'+
+  '<div class="err" id="fg_err" style="display:none"></div>'+
+  '<button class="btn primary" onclick="doForgot()">Get recovery code</button>'+
+  '<div class="divider"></div><div class="center"><a class="btn secondary" onclick="go(\'login')">Back to sign in</a></div>'+
+  '</div>';
+}
+function renderRecover(v){
+  v.innerHTML =
+  '<div class="hero"><div class="logo">⚡</div><div class="brand">Flash<span>Wallet</span></div>'+
+  '<p style="margin-bottom:24px">Recover your account</p>'+
+  '<div class="auth-card">'+
+  '<div class="form-group"><label class="lab">Recovery code</label><input class="input" id="rc_c" placeholder="6-char code"></div>'+
+  '<div class="form-group"><label class="lab">New password</label><input class="input" id="rc_p" type="password" placeholder="new password"></div>'+
+  '<div class="err" id="rc_err" style="display:none"></div>'+
+  '<button class="btn primary" onclick="doRecover()">Reset password</button>'+
+  '<div class="divider"></div><div class="center"><a class="btn secondary" onclick="go(\'forgot\')">Back</a></div>'+
+  '</div>';
+}
+function doLogin(){
+  hideErr("li_err");
+  api("login",{username:$("li_u").value,password:$("li_p").value},function(r){
+    if(!r.ok){ errShow("li_err", r.error||"Login failed"); return; }
+    me = {tid:r.account.tid, token:r.token, username:r.account.username, admin:!!r.account.admin};
+    saveSess();
+    toast("Welcome back "+r.account.username);
+    go("home");
+  });
+}
 
-            <div class="bg-cardBg p-6 rounded-3xl border border-darkBorder shadow-2xl space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Username or Email</label>
-                    <input type="text" id="loginUser" placeholder="Enter username..." class="w-full bg-darkBg border border-darkBorder rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accentBlue transition-colors">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Password</label>
-                    <input type="password" id="loginPass" placeholder="••••••••" class="w-full bg-darkBg border border-darkBorder rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accentBlue transition-colors">
-                </div>
-                <div class="flex justify-between items-center text-xs">
-                    <label class="flex items-center text-gray-400 cursor-pointer"><input type="checkbox" class="mr-2 rounded accent-accentBlue"> Remember</label>
-                    <button onclick="switchPage('forgot')" class="text-accentBlue hover:underline">Forgot password?</button>
-                </div>
-                <button onclick="handleLogin()" class="w-full bg-accentBlue text-white font-extrabold py-3.5 rounded-2xl shadow-xl hover:opacity-90 active:scale-[0.98] transition-all text-sm uppercase tracking-wider">Sign In to Dashboard</button>
-                <div class="text-center pt-2">
-                    <button onclick="switchPage('signup')" class="text-xs text-gray-400 hover:text-white font-semibold">New here? Create account</button>
-                </div>
-            </div>
-        </div>
+function doSignup(){
+  hideErr("su_err");
+  var d = {username:$("su_u").value,password:$("su_p").value,email:$("su_e").value};
+  if(tgId){ d.tid = tgId; }
+  api("signup",d,function(r){
+    if(!r.ok){ errShow("su_err", r.error||"Signup failed"); return; }
+    me = {tid:r.account.tid, token:r.token, username:r.account.username, admin:!!r.account.admin};
+    saveSess();
+    toast("Account created");
+    go("home");
+  });
+}
 
-        <!-- ================= PAGE 3: FORGOT PASSWORD ================= -->
-        <div id="pageForgot" class="space-y-6 pt-6 hidden">
-            <div class="bg-cardBg p-6 rounded-3xl border border-darkBorder shadow-2xl space-y-4">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-base font-bold text-white"><i class="fa-solid fa-key text-yellow-400 mr-2"></i> Account Recovery</h3>
-                    <button onclick="switchPage('login')" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-                </div>
-                <p class="text-xs text-gray-400 leading-relaxed">Enter your registered email address or Telegram handle to receive password recovery tokens.</p>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Registered Email / Username</label>
-                    <input type="text" id="recoverTarget" placeholder="e.g. user@gmail.com" class="w-full bg-darkBg border border-darkBorder rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-yellow-400">
-                </div>
-                <button onclick="submitRecoveryRequest()" class="w-full bg-yellow-500 text-black font-extrabold py-3.5 rounded-2xl text-xs uppercase tracking-wider shadow-lg hover:bg-yellow-400">Send Recovery Token</button>
-            </div>
-        </div>
+function doForgot(){
+  hideErr("fg_err");
+  api("forgot",{username:$("fg_k").value},function(r){
+    if(!r.ok){ errShow("fg_err", r.error||"Not found"); return; }
+    toast("Recovery code: "+r.recovery+" - save it now!");
+  });
+}
 
-        <!-- ================= PAGE 4: HOME ================= -->
-        <div id="pageHome" class="space-y-4 hidden">
-            <div class="bg-gradient-to-br from-cardBg via-cardHover to-darkBg p-5 rounded-3xl border border-darkBorder shadow-2xl relative overflow-hidden">
-                <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-accentGreen/10 rounded-full blur-2xl pointer-events-none"></div>
-                <div class="flex justify-between items-start mb-4">
-                    <div>
-                        <span class="text-[10px] uppercase font-extrabold tracking-widest px-2.5 py-1 bg-accentGreen/20 text-accentGreen rounded-full">VIP Trader Level 2</span>
-                        <h2 id="homeUsernameDisplay" class="text-lg font-bold text-white mt-1.5">@trader</h2>
-                    </div>
-                    <button onclick="handleLogout()" class="text-xs text-red-400 bg-red-500/10 px-3 py-1.5 rounded-xl border border-red-500/20"><i class="fa-solid fa-power-off mr-1"></i> Logout</button>
-                </div>
-                <div class="bg-darkBg/80 p-4 rounded-2xl border border-darkBorder flex justify-between items-center">
-                    <div>
-                        <p class="text-xs text-gray-400">Total Portfolio Balance</p>
-                        <h3 class="text-2xl font-black text-white mt-0.5"><span id="homeUserBalance">2,500.00</span> <span class="text-xs font-normal text-accentGreen">USDT</span></h3>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="switchPage('wallet')" class="bg-accentGreen text-black text-xs font-bold px-3 py-2.5 rounded-xl shadow">Deposit</button>
-                        <button onclick="switchPage('wallet')" class="bg-darkBorder text-white text-xs font-bold px-3 py-2.5 rounded-xl">Withdraw</button>
-                    </div>
-                </div>
-            </div>
+function doRecover(){
+  hideErr("rc_err");
+  api("recover",{recovery:$("rc_c").value,password:$("rc_p").value},function(r){
+    if(!r.ok){ errShow("rc_err", r.error||"Bad code"); return; }
+    toast("Password reset. Sign in now.");
+    go("login");
+  });
+}
 
-            <!-- Dynamic Admin Bonus Card -->
-            <div class="bg-gradient-to-r from-purple-900/50 via-indigo-900/50 to-cardBg p-4 rounded-2xl border border-purple-500/30 flex items-center justify-between shadow-lg">
-                <div>
-                    <span id="homeBonusBadge" class="text-[10px] uppercase font-bold tracking-wider bg-purple-500/20 text-purple-300 px-2.5 py-0.5 rounded">⚡ Active Bonus Event</span>
-                    <h4 id="homeBonusTitle" class="text-sm font-bold text-white mt-1">First Deposit +50% Bonus</h4>
-                    <p id="homeBonusDesc" class="text-[11px] text-gray-300 mt-0.5">Top up USDT/BTC now to instantly claim bonus rewards.</p>
-                </div>
-                <button onclick="switchPage('wallet')" class="bg-purple-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow whitespace-nowrap">Claim Now</button>
-            </div>
+function renderLanding(v){
+  v.innerHTML =
+  '<div class="hero"><div class="logo">⚡</div><div class="brand">Flash<span>Wallet</span></div>'+
+  '<p style="margin-bottom:22px">Trade 50+ coins, deposit, withdraw and connect your wallet - all inside Telegram.</p>'+
+  '<div class="auth-card">'+
+  '<div class="row"><button class="btn primary" onclick="go(\'signup\')">Sign up</button><button class="btn secondary" onclick="go(\'login\')">Sign in</button></div>'+
+  '<div class="divider"></div><div class="center small">New here? Create an account in seconds.<br>Already have one? Sign in, reset or recover your password.</div>'+
+  '</div>';
+}
 
-            <!-- Live Platform Stats -->
-            <div class="grid grid-cols-2 gap-3">
-                <div class="bg-cardBg p-4 rounded-2xl border border-darkBorder">
-                    <p class="text-[10px] text-gray-400 uppercase font-semibold">Total Registered Users</p>
-                    <p id="statTotalUsers" class="text-lg font-bold text-white mt-1"><i class="fa-solid fa-users text-accentGreen mr-1.5 text-sm"></i> 24,892</p>
-                </div>
-                <div class="bg-cardBg p-4 rounded-2xl border border-darkBorder">
-                    <p class="text-[10px] text-gray-400 uppercase font-semibold">Live Active Traders</p>
-                    <p id="statActiveTraders" class="text-lg font-bold text-accentBlue mt-1"><i class="fa-solid fa-signal mr-1.5 text-sm"></i> 1,420</p>
-                </div>
-            </div>
+function saveSess(){ if(me){ try{ localStorage.setItem("fw_sess", JSON.stringify(me)); }catch(e){} } }
+function loadSess(){ try{ var s = localStorage.getItem("fw_sess"); if(s){ me = JSON.parse(s); } }catch(e){ me = null; } }
 
-            <!-- Leaderboard -->
-            <div class="bg-cardBg p-4 rounded-2xl border border-darkBorder space-y-3">
-                <div class="flex justify-between items-center border-b border-darkBorder pb-2">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-trophy text-yellow-400 mr-1.5"></i> Live Leaderboard</h3>
-                </div>
-                <div id="leaderboardList" class="space-y-2 text-xs">
-                    <div class="flex justify-between items-center bg-darkBg p-2.5 rounded-xl border border-darkBorder">
-                        <div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-yellow-500/20 text-yellow-400 flex items-center justify-center font-bold text-[10px]">1</span><span class="font-medium text-white">@cryptoking_99</span></div>
-                        <span class="text-accentGreen font-bold">+$18,500.00</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+function doLogout(){
+  me = null;
+  try{ localStorage.removeItem("fw_sess"); }catch(e){}
+  $("tg").textContent = "";
+  go("landing");
+  toast("Signed out");
+}
 
-        <!-- ================= PAGE 5: COINS (Updated from Trading) ================= -->
-        <div id="pageTrading" class="space-y-4 hidden">
-            <div class="bg-cardBg p-4 rounded-2xl border border-darkBorder space-y-3">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-coins text-accentGreen mr-1.5"></i> Select Asset (50+ Coins)</h3>
-                    <span class="text-[10px] bg-accentGreen/10 text-accentGreen px-2 py-0.5 rounded font-bold">Live Sync</span>
-                </div>
-                <div class="relative">
-                    <i class="fa-solid fa-search absolute left-3.5 top-3 text-xs text-gray-500"></i>
-                    <input type="text" id="coinSearchInput" oninput="renderCoins()" placeholder="Search BTC, ETH, USDT, SOL..." class="w-full bg-darkBg border border-darkBorder rounded-xl pl-9 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-accentGreen">
-                </div>
-                <div id="coinsGridContainer" class="grid grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1"></div>
-            </div>
+function renderHome(v){
+  if(!requireAuth()) return;
+  $("tg").innerHTML = '<a onclick="doLogout()" style="cursor:pointer;text-decoration:underline">Logout</a>'+(me.admin?' | <a onclick="go(\'admin\')" style="cursor:pointer;text-decoration:underline">Admin</a>':'');
+  var c = bootData?bootData.content||{}:{};
+  var stats = bootData?bootData.stats||{}:{};
+  var bal = me.balance||0;
+  var bonus = me.bonus||0;
+  var ev = c.events||[];
+  var topw = c.top_withdraw||[];
+  var topt = c.top_trade||[];
+  var h = '<div class="dash"><div class="hero"><div class="brand">Hello, '+esc(me.username)+'!</div>'+
+  '<p style="margin-top:4px">Your Flash Wallet is ready. Trade, deposit and withdraw in seconds.</p></div>'+
+  '<div class="grid">'+
+  '<div class="tile"><div class="t">Balance</div><div class="v">'+bal+'</div><div class="sub">USDT</div></div>'+
+  '<div class="tile"><div class="t">Bonus</div><div class="v">'+bonus+'</div><div class="sub">USDT</div></div>'+
+  '</div>'+
+  '<div class="row mt"><button class="btn primary" onclick="go(\'wallet\')">Deposit</button><button class="btn good" onclick="go(\'wallet\')">Withdraw</button></div>'+
+  (me.admin?'<div class="row mt"><button class="btn secondary" onclick="go(\'admin\')">Open admin panel</button></div>':'');
+  if(ev.length){
+    h += '<div class="card"><h2>Events</h2>';
+    for(var i=0;i<ev.length;i++){ h += '<div class="ev"><div class="d">📅</div><div class="t">'+esc(ev[i])+'</div></div>'; }
+    h += '</div>';
+  }
+  h += '<div class="card"><h2>Live counters</h2>'+
+  '<div class="stat"><span>Registered users</span><b>'+esc(stats.registered||0)+'</b></div>'+
+  '<div class="stat"><span>New today</span><b>'+esc(stats.today||0)+'</b></div>'+
+  '<div class="stat"><span>Deposits</span><b>'+esc(stats.deposits||0)+'</b></div>'+
+  '<div class="stat"><span>Withdrawals</span><b>'+esc(stats.withdraws||0)+'</b></div>'+
+  '<div class="stat"><span>Trades</span><b>'+esc(stats.trades||0)+'</b></div></div>';
+  if(topw.length){
+    h += '<div class="card"><h2>Top withdraws</h2>';
+    for(var j=0;j<topw.length;j++){ h += '<div class="stat"><span>'+esc(topw[j].label||"")+'</span><b>'+esc(topw[j].value||"")+'</b></div>'; }
+    h += '</div>';
+  }
+  if(topt.length){
+    h += '<div class="card"><h2>Top trades</h2>';
+    for(var k=0;k<topt.length;k++){ h += '<div class="stat"><span>'+esc(topt[k].label||"")+'</span><b>'+esc(topt[k].value||"")+'</b></div>'; }
+    h += '</div>';
+  }
+  h += '</div>';
+  v.innerHTML = h;
+}
 
-            <!-- Network & Dynamic Admin Packages (Timer & Cost editable from Admin Panel) -->
-            <div id="tradingConfigSection" class="bg-cardBg p-4 rounded-2xl border border-darkBorder space-y-3 hidden">
-                <div class="flex justify-between items-center border-b border-darkBorder pb-2">
-                    <h3 id="activeCoinTitle" class="text-sm font-bold text-white">Selected Asset: BTC</h3>
-                    <span class="text-[10px] text-accentGreen font-semibold">Configured by Admin</span>
-                </div>
+function renderTrade(v){
+  if(!requireAuth()) return;
+  var coins = bootData?bootData.coins||{}:{};
+  var names = Object.keys(coins);
+  var h = '<div class="dash"><div class="hero"><div class="brand">Trade</div><p style="margin-top:4px">Choose a coin, then network and plan.</p></div>'+
+  '<div class="card"><h2>Choose a coin</h2><div class="list">';
+  for(var i=0;i<names.length;i++){
+    var n = names[i];
+    h += '<div class="item" onclick="selCoin(\''+esc(n)+'\')"><div class="ic">'+esc(n.slice(0,2))+'</div><div><div class="nm">'+esc(n)+'</div><div class="sb">'+(coins[n].networks||[]).length+' networks</div></div><div class="ar">›</div></div>';
+  }
+  h += '</div></div><div id="netsel"></div></div>';
+  v.innerHTML = h;
+  if(sel.coin && coins[sel.coin]) showNets(sel.coin);
+}
 
-                <div>
-                    <label class="block text-[11px] text-gray-400 mb-1.5 font-semibold">Select Blockchain Network:</label>
-                    <div id="networkChoicesBox" class="flex flex-wrap gap-2"></div>
-                </div>
+function selCoin(c){ sel.coin=c; showNets(c); }
 
-                <div>
-                    <label class="block text-[11px] text-gray-400 mb-1.5 font-semibold">Select Admin-Set Amount & Duration Package:</label>
-                    <div id="packageChoicesBox" class="space-y-2"></div>
-                </div>
+function showNets(c){
+  var nets = (bootData.coins[c]||{}).networks||[];
+  var h = '<div class="card"><h2>'+esc(c)+' networks</h2><div>';
+  for(var i=0;i<nets.length;i++){
+    h += '<span class="net'+(sel.net==nets[i]?" on":"")+'" onclick="selNet(\''+esc(c)+'\',\''+esc(nets[i])+'\')">'+esc(nets[i])+'</span>';
+  }
+  h += '</div><div class="divider"></div><div id="plans"></div></div>';
+  $("netsel").innerHTML = h;
+  showPlans(c);
+}
 
-                <div class="bg-darkBg p-3 rounded-xl border border-darkBorder flex justify-between items-center text-xs">
-                    <span class="text-gray-400">Required Return Payout:</span>
-                    <span id="calculatedReturnAmount" class="font-bold text-accentGreen">1000.00 BTC</span>
-                </div>
+function selNet(c,n){ sel.net=n; showNets(c); }
 
-                <button onclick="executeCryptoTrade()" class="w-full bg-accentGreen text-black font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider shadow-lg hover:opacity-90 active:scale-[0.98] transition-all">Confirm & Execute Contract</button>
-            </div>
-        </div>
+function showPlans(c){
+  var plans = bootData?bootData.plans||[]:[];
+  var h = '<h2>Plans for '+esc(c)+' / '+esc(sel.net)+'</h2>';
+  for(var i=0;i<plans.length;i++){
+    var p = plans[i];
+    h += '<div class="plan"><div class="amt">'+esc(p.amount)+' '+esc(c)+' = '+esc(p.returns)+' '+esc(c)+'</div>'+
+    '<div class="tm">'+esc(p.seconds)+' seconds</div>'+
+    '<button class="btn '+(sel.plan==p.id?"primary":"")+'" onclick="selPlan(\''+esc(p.id)+'\')">Choose</button></div>';
+  }
+  h += '<button class="btn good" onclick="doTrade()">Start trade</button>';
+  $("plans").innerHTML = h;
+}
 
-        <!-- ================= PAGE 6: WALLET ================= -->
-        <div id="pageWallet" class="space-y-4 hidden">
-            <div class="flex bg-cardBg p-1 rounded-2xl border border-darkBorder">
-                <button onclick="switchWalletTab('deposit')" id="wTabDep" class="flex-1 py-2 text-xs font-bold rounded-xl bg-accentGreen text-black transition-all">Deposit</button>
-                <button onclick="switchWalletTab('withdraw')" id="wTabWith" class="flex-1 py-2 text-xs font-bold rounded-xl text-gray-400 hover:text-white transition-all">Withdraw</button>
-                <button onclick="switchWalletTab('connect')" id="wTabConn" class="flex-1 py-2 text-xs font-bold rounded-xl text-gray-400 hover:text-white transition-all">Connect Wallets (50+)</button>
-            </div>
+function selPlan(id){ sel.plan=id; toast("Plan selected"); renderTrade($("view")); }
 
-            <!-- Deposit Pane -->
-            <div id="walletDepositPane" class="bg-cardBg p-5 rounded-2xl border border-darkBorder space-y-4">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-arrow-down-to-bracket text-accentGreen mr-1.5"></i> Crypto Deposit Center</h3>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Select Deposit Asset & Network</label>
-                    <select id="depositAssetSelect" onchange="updateDepositAddressDisplay()" class="w-full bg-darkBg border border-darkBorder rounded-xl px-3.5 py-3 text-xs text-white focus:outline-none focus:border-accentGreen">
-                        <option value="usdt_trc20">USDT (TRC20)</option>
-                        <option value="btc">Bitcoin (BTC)</option>
-                    </select>
-                </div>
-                <div class="bg-darkBg p-3.5 rounded-xl border border-darkBorder space-y-2">
-                    <p class="text-[11px] text-gray-400">Send exact funds to admin address below:</p>
-                    <div class="flex justify-between items-center bg-cardBg p-2.5 rounded-lg border border-darkBorder">
-                        <span id="displayAdminWalletAddr" class="text-xs font-mono text-accentGreen truncate mr-2">TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE</span>
-                        <button onclick="copyAdminAddress()" class="text-xs bg-gray-700 text-white px-3 py-1.5 rounded-lg hover:bg-gray-600"><i class="fa-solid fa-copy"></i></button>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Transaction ID (TXID Hash)</label>
-                    <input type="text" id="depositTxidInput" placeholder="Paste transaction hash here..." class="w-full bg-darkBg border border-darkBorder rounded-xl px-3.5 py-3 text-xs text-white">
-                </div>
-                <button onclick="submitDepositProofToAdmin()" class="w-full bg-accentGreen text-black font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider shadow-lg">Submit Deposit for Approval</button>
-            </div>
+function doTrade(){
+  if(!sel.plan){ toast("Pick a plan first"); return; }
+  api("trade",{coin:sel.coin,network:sel.net,plan_id:sel.plan},function(r){
+    if(!r.ok){ toast(r.error||"Trade failed"); return; }
+    me.balance = r.balance;
+    toast("Trade placed! Returns: "+r.returns);
+    go("home");
+  });
+}
 
-            <!-- Withdrawal Pane -->
-            <div id="walletWithdrawPane" class="bg-cardBg p-5 rounded-2xl border border-darkBorder space-y-4 hidden">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-arrow-up-from-bracket text-accentBlue mr-1.5"></i> Request Withdrawal</h3>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Withdrawal Amount</label>
-                    <input type="number" id="withdrawAmountInput" placeholder="Enter amount..." class="w-full bg-darkBg border border-darkBorder rounded-xl px-3.5 py-3 text-xs text-white">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1.5">Destination Wallet Address</label>
-                    <input type="text" id="withdrawAddressInput" placeholder="Paste receiving address..." class="w-full bg-darkBg border border-darkBorder rounded-xl px-3.5 py-3 text-xs text-white">
-                </div>
-                <button onclick="submitWithdrawalRequest()" class="w-full bg-accentBlue text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider">Submit Withdrawal Ticket</button>
-            </div>
+function renderWallet(v){
+  if(!requireAuth()) return;
+  var addr = bootData?bootData.deposit||{}:{};
+  var coins = bootData?bootData.coins||{}:{};
+  var names = Object.keys(coins);
+  var h = '<div class="card mt"><h2>Deposit</h2>'+
+  '<label class="lab">Coin</label><select class="input" id="dp_c">';
+  for(var i=0;i<names.length;i++){ h += '<option>'+esc(names[i])+'</option>'; }
+  h += '</select><label class="lab">Network</label><select class="input" id="dp_n"></select>'+
+  '<button class="btn primary" onclick="getAddr()">Get deposit address</button>'+
+  '<div id="dp_out" class="mt"></div></div>';
+  h += '<div class="card"><h2>Withdraw</h2>'+
+  '<label class="lab">Coin</label><select class="input" id="wd_c">';
+  for(var j=0;j<names.length;j++){ h += '<option>'+esc(names[j])+'</option>'; }
+  h += '</select><label class="lab">Network</label><select class="input" id="wd_n"></select>'+
+  '<label class="lab">Amount</label><input class="input" id="wd_a" placeholder="amount">'+
+  '<label class="lab">Your address</label><input class="input" id="wd_ad" placeholder="destination address">'+
+  '<label class="lab">Txid (payment proof)</label><input class="input" id="wd_tx" placeholder="transaction id">'+
+  '<label class="lab">Note</label><input class="input" id="wd_no" placeholder="optional note">'+
+  '<button class="btn good" onclick="doWithdraw()">Request withdrawal</button></div>';
+  h += '<div class="card"><h2>Proof of payment</h2><label class="lab">Screenshot / file</label><input type="file" id="up_f" accept="image/*"><button class="btn" onclick="uploadProof()">Send proof to admin</button></div>';
+  v.innerHTML = h;
+  fillNets("dp_c","dp_n"); fillNets("wd_c","wd_n");
+}
 
-            <!-- Wallet Connect Pane (50+ Wallets) -->
-            <div id="walletConnectPane" class="bg-cardBg p-5 rounded-2xl border border-darkBorder space-y-4 hidden">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-link text-accentGreen mr-1.5"></i> Connect Global Wallets (50+)</h3>
-                <div class="relative">
-                    <input type="text" id="walletSearchInput" oninput="renderWalletsList()" placeholder="Search Trust Wallet, MetaMask..." class="w-full bg-darkBg border border-darkBorder rounded-xl px-3.5 py-2.5 text-xs text-white">
-                </div>
-                <div id="walletsGridContainer" class="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1"></div>
-            </div>
-        </div>
+function fillNets(cid,nid){
+  var c = $(cid).value; var nets = (bootData.coins[c]||{}).networks||[];
+  var s = $(nid); s.innerHTML="";
+  for(var i=0;i<nets.length;i++){ s.innerHTML += '<option>'+esc(nets[i])+'</option>'; }
+}
 
-        <!-- ================= PAGE 7: SUPPORT ================= -->
-        <div id="pageSupport" class="space-y-4 hidden">
-            <div class="bg-cardBg p-4 rounded-2xl border border-darkBorder flex flex-col h-96">
-                <div class="flex justify-between items-center pb-3 border-b border-darkBorder mb-3">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-headset text-accentGreen mr-1.5"></i> 24/7 Live Support</h3>
-                </div>
-                <div id="supportChatStream" class="flex-1 overflow-y-auto space-y-2.5 pr-1 text-xs">
-                    <div class="bg-darkBg p-3 rounded-2xl border border-darkBorder max-w-[85%]">
-                        <p class="text-[10px] text-accentGreen font-bold mb-0.5">Official Support Agent</p>
-                        <p class="text-gray-300">Hello! How can we help you today?</p>
-                    </div>
-                </div>
-                <div class="flex gap-2 pt-3 border-t border-darkBorder mt-2">
-                    <input type="text" id="supportUserMsgInput" placeholder="Type message..." class="flex-1 bg-darkBg border border-darkBorder rounded-xl px-3 py-3 text-xs text-white">
-                    <button onclick="sendUserSupportMessage()" class="bg-accentGreen text-black font-bold px-4 py-3 rounded-xl text-xs">Send</button>
-                </div>
-            </div>
-        </div>
+function getAddr(){
+  api("deposit",{coin:$("dp_c").value,network:$("dp_n").value},function(r){
+    if(!r.ok){ toast(r.error||"Failed"); return; }
+    $("dp_out").innerHTML = '<div class="stat"><span>Address</span><b>'+esc(r.address||"(not set by admin)")+'</b></div>'+
+    '<div class="stat"><span>Coin</span><b>'+esc(r.coin)+' / '+esc(r.network)+'</b></div>'+
+    '<div class="small mt">Send only '+esc(r.coin)+' on the '+esc(r.network)+' network to this address.</div>';
+  });
+}
 
-        <!-- ================= PAGE 8: ADMIN PANEL (Fully Editable Timers & Amounts) ================= -->
-        <div id="pageAdmin" class="space-y-4 hidden">
-            <div class="bg-cardBg p-5 rounded-3xl border border-red-500/30 space-y-4 shadow-2xl">
-                <div class="flex justify-between items-center border-b border-darkBorder pb-3">
-                    <div>
-                        <span class="text-[10px] uppercase font-extrabold tracking-widest px-2.5 py-1 bg-red-500/20 text-red-400 rounded-full">Admin Dashboard</span>
-                        <h2 class="text-base font-black text-white mt-1">Platform Control Center</h2>
-                    </div>
-                    <button onclick="switchPage('home')" class="text-xs bg-darkBorder text-white px-3 py-1.5 rounded-xl"><i class="fa-solid fa-arrow-left mr-1"></i> Exit</button>
-                </div>
+function doWithdraw(){
+  api("withdraw",{coin:$("wd_c").value,network:$("wd_n").value,amount:$("wd_a").value,address:$("wd_ad").value,txid:$("wd_tx").value,note:$("wd_no").value},function(r){
+    if(!r.ok){ toast(r.error||"Withdraw failed"); return; }
+    me.balance = r.balance;
+    toast("Withdrawal requested. Admin will confirm.");
+    go("home");
+  });
+}
 
-                <div class="grid grid-cols-2 gap-2 text-[10px] font-bold">
-                    <button onclick="switchAdminSubTab('general')" id="admTabGen" class="p-2.5 rounded-xl bg-red-600 text-white">General</button>
-                    <button onclick="switchAdminSubTab('trading')" id="admTabTrd" class="p-2.5 rounded-xl bg-darkBg text-gray-400 border border-darkBorder">Timers & Amounts</button>
-                </div>
+function uploadProof(){
+  var f = $("up_f").files[0];
+  if(!f){ toast("Pick a screenshot first"); return; }
+  var rd = new FileReader();
+  rd.onload = function(){
+    var b64 = String(rd.result).split(",")[1]||"";
+    api("support_upload",{text:"Deposit proof",name:f.name,data:b64},function(r){
+      toast(r.ok?"Proof sent to admin":"Upload failed");
+    });
+  };
+  rd.readAsDataURL(f);
+}
 
-                <!-- Subtab 1: General Settings -->
-                <div id="admPaneGeneral" class="space-y-3 text-xs">
-                    <div>
-                        <label class="block text-[11px] text-gray-400 mb-1 font-semibold">Admin Deposit Wallet Address</label>
-                        <input type="text" id="admWalletTrcInput" value="TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE" class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2.5 text-white font-mono text-[11px]">
-                    </div>
-                    <button onclick="saveAdminGeneralSettings()" class="w-full bg-red-600 text-white font-extrabold py-3 rounded-xl uppercase tracking-wider">Save General Settings</button>
-                </div>
+var wallets = ["Trust Wallet","imToken","Binance Web3 Wallet","MetaMask","Coinbase Wallet","TokenPocket","MathWallet","BitKeep","SafePal","Exodus","Phantom","TronLink"];
+function renderConnect(v){
+  if(!requireAuth()) return;
+  var h = '<div class="card mt"><h2>Connect a wallet</h2><p class="small mb">Pick your wallet. The admin will help you connect it so you can withdraw funds.</p><div class="list">';
+  for(var i=0;i<wallets.length;i++){
+    h += '<div class="wal" onclick="askConnect(\''+esc(wallets[i])+'\')"><div class="ic">👛</div><div><div class="nm">'+esc(wallets[i])+'</div><div class="sb">Tap to request connection help</div></div><div class="ar">›</div></div>';
+  }
+  h += '</div></div><div id="cqw"></div>';
+  v.innerHTML = h;
+}
 
-                <!-- Subtab 2: Editable Timers, Package Names, Cost & Payouts (Requested Feature) -->
-                <div id="admPaneTrading" class="space-y-3 text-xs hidden">
-                    <p class="text-[11px] text-gray-400">Configure exact package names, custom duration timers, and cost/payout quantities:</p>
-                    
-                    <div class="bg-darkBg p-3 rounded-xl border border-darkBorder space-y-3">
-                        <p class="text-xs font-bold text-accentGreen">Package 1 Configuration</p>
-                        <div class="flex gap-2">
-                            <input type="text" id="pkgName1" value="Standard Contract" class="flex-1 bg-cardBg border border-darkBorder rounded-lg px-2 py-1 text-white text-xs" placeholder="Name">
-                            <input type="text" id="pkgTimer1" value="30s" class="w-16 bg-cardBg border border-darkBorder rounded-lg px-2 py-1 text-white text-xs" placeholder="Timer">
-                            <input type="number" id="pkgCost1" value="1000" class="w-20 bg-cardBg border border-darkBorder rounded-lg px-2 py-1 text-white text-xs" placeholder="Cost">
-                        </div>
+function askConnect(w){
+  api("connect_wallet",{wallet:w},function(r){
+    if(!r.ok){ toast(r.error||"Failed"); return; }
+    var qs = r.questions||[];
+    var h = '<div class="card"><h2>Connect '+esc(w)+'</h2>';
+    for(var i=0;i<qs.length;i++){ h += '<label class="lab">Q'+(i+1)+'</label><input class="input" id="cq_'+i+'" placeholder="'+esc(qs[i])+'">'; }
+    h += '<button class="btn primary" onclick="sendAnswers(\''+esc(w)+'\')">Send answers</button></div>';
+    $("cqw").innerHTML = h;
+  });
+}
 
-                        <p class="text-xs font-bold text-accentGreen pt-2">Package 2 Configuration</p>
-                        <div class="flex gap-2">
-                            <input type="text" id="pkgName2" value="Advanced Contract" class="flex-1 bg-cardBg border border-darkBorder rounded-lg px-2 py-1 text-white text-xs" placeholder="Name">
-                            <input type="text" id="pkgTimer2" value="60s" class="w-16 bg-cardBg border border-darkBorder rounded-lg px-2 py-1 text-white text-xs" placeholder="Timer">
-                            <input type="number" id="pkgCost2" value="2000" class="w-20 bg-cardBg border border-darkBorder rounded-lg px-2 py-1 text-white text-xs" placeholder="Cost">
-                        </div>
+function sendAnswers(w){
+  var qs = (bootData.content||{}).connect_questions||[];
+  var all = [];
+  for(var i=0;i<qs.length;i++){ var e = $("cq_"+i); all.push(qs[i]+": "+(e?e.value:"")); }
+  api("connect_answer",{wallet:w,answer:all.join(" | ")},function(r){
+    toast(r.ok?"Answers sent to admin":"Failed");
+    if(r.ok) $("cqw").innerHTML = '<div class="card"><div class="center small">Answers sent. The admin will reply in Support.</div></div>';
+  });
+}
 
-                        <p class="text-xs font-bold text-accentGreen pt-2">Package 3 Configuration</p>
-                        <div class="flex gap-2">
-                            <input type="text" id="pkgName3" value="VIP High-Yield" class="flex-1 bg-cardBg border border-darkBorder rounded-lg px-2 py-1 text-white text-xs" placeholder="Name">
-                            <input type="text" id="pkgTimer3" value="120s" class="w-16 bg-cardBg border border-darkBorder rounded-lg px-2 py-1 text-white text-xs" placeholder="Timer">
-                            <input type="number" id="pkgCost3" value="5000" class="w-20 bg-cardBg border border-darkBorder rounded-lg px-2 py-1 text-white text-xs" placeholder="Cost">
-                        </div>
-                    </div>
-                    <button onclick="saveAdminPackageSettings()" class="w-full bg-red-600 text-white font-extrabold py-3 rounded-xl uppercase tracking-wider">Save Timers & Amounts</button>
-                </div>
-            </div>
-        </div>
+var ticket = {messages:[]};
+function renderSupport(v){
+  if(!requireAuth()) return;
+  var h = '<div class="card mt"><h2>Support</h2><div class="chat" id="chat"></div>'+
+  '<div class="row mt"><input class="input" id="sp_t" placeholder="Type your message..." style="margin-bottom:0"><button class="btn primary" style="width:auto" onclick="sendSupport()">Send</button></div>'+
+  '<div class="divider"></div><label class="lab">Attach screenshot</label><input type="file" id="sp_f" accept="image/*"><button class="btn mt" onclick="sendSupportFile()">Send screenshot</button></div>';
+  v.innerHTML = h;
+  loadTicket();
+}
 
-    </div>
+function loadTicket(){
+  api("support_read",{},function(r){
+    if(r.ok && r.ticket){ ticket = r.ticket; drawChat(); }
+  });
+}
 
-    <!-- BOTTOM NAVIGATION BAR (Renamed tab to Coins) -->
-    <div id="navBarContainer" class="hidden fixed bottom-0 left-0 right-0 bg-cardBg border-t border-darkBorder py-2.5 px-4 flex justify-around items-center z-50 shadow-2xl max-w-md mx-auto">
-        <button onclick="switchPage('home')" id="navBtnHome" class="flex flex-col items-center text-accentGreen transition-all">
-            <i class="fa-solid fa-house text-base"></i>
-            <span class="text-[10px] mt-1 font-semibold">Home</span>
-        </button>
-        <button onclick="switchPage('trading')" id="navBtnTrading" class="flex flex-col items-center text-gray-400 hover:text-white transition-all">
-            <i class="fa-solid fa-coins text-base"></i>
-            <span class="text-[10px] mt-1 font-semibold">Coins</span>
-        </button>
-        <button onclick="switchPage('wallet')" id="navBtnWallet" class="flex flex-col items-center text-gray-400 hover:text-white transition-all">
-            <i class="fa-solid fa-wallet text-base"></i>
-            <span class="text-[10px] mt-1 font-semibold">Wallet</span>
-        </button>
-        <button onclick="switchPage('support')" id="navBtnSupport" class="flex flex-col items-center text-gray-400 hover:text-white transition-all">
-            <i class="fa-solid fa-headset text-base"></i>
-            <span class="text-[10px] mt-1 font-semibold">Support</span>
-        </button>
-        <button onclick="switchPage('admin')" id="navBtnAdmin" class="flex flex-col items-center text-red-400 hover:text-red-300 transition-all">
-            <i class="fa-solid fa-user-shield text-base"></i>
-            <span class="text-[10px] mt-1 font-semibold">Admin</span>
-        </button>
-    </div>
+function drawChat(){
+  var c = $("chat"); if(!c) return;
+  var h = "";
+  for(var i=0;i<ticket.messages.length;i++){
+    var m = ticket.messages[i];
+    h += '<div class="msg '+(m.from=="user"?"u":"a")+'">'+esc(m.text)+'</div>';
+  }
+  c.innerHTML = h;
+}
 
-    <!-- JAVASCRIPT LOGIC -->
-    <script>
-        let tg = window.Telegram.WebApp;
-        try { tg.expand(); tg.ready(); } catch(e) {}
+function sendSupport(){
+  var t = $("sp_t").value; if(!t) return;
+  api("support_send",{text:t},function(r){
+    if(r.ok){ ticket = r.ticket; drawChat(); $("sp_t").value=""; }
+    else toast(r.error||"Failed");
+  });
+}
 
-        let currentUser = localStorage.getItem('app_user') || null;
-        let userBalance = parseFloat(localStorage.getItem('app_balance') || '2500.00');
-        let adminWalletTrc = localStorage.getItem('adm_wallet') || 'TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE';
+function sendSupportFile(){
+  var f = $("sp_f").files[0];
+  if(!f){ toast("Pick a screenshot first"); return; }
+  var rd = new FileReader();
+  rd.onload = function(){
+    var b64 = String(rd.result).split(",")[1]||"";
+    api("support_upload",{text:"Support screenshot",name:f.name,data:b64},function(r){
+      toast(r.ok?"Screenshot sent to admin":"Upload failed");
+    });
+  };
+  rd.readAsDataURL(f);
+}
 
-        // Dynamic Package Storage (Editable from Admin Panel)
-        let packagesData = JSON.parse(localStorage.getItem('custom_packages')) || [
-            { name: 'Standard Contract', timer: '30s', cost: 1000 },
-            { name: 'Advanced Contract', timer: '60s', cost: 2000 },
-            { name: 'VIP High-Yield', timer: '120s', cost: 5000 }
-        ];
+function renderAdmin(v){
+  if(!requireAuth()) return;
+  if(!me.admin){ v.innerHTML = '<div class="card mt center small">Admin only.</div>'; return; }
+  var h = '<div class="card mt"><h2>Admin dashboard</h2>'+
+  '<div class="grid">'+
+  '<button class="btn" onclick="admUsers()">Users</button>'+
+  '<button class="btn" onclick="admRequests()">Requests</button>'+
+  '<button class="btn" onclick="admTickets()">Tickets</button>'+
+  '<button class="btn" onclick="admBroadcast()">Broadcast</button>'+
+  '<button class="btn" onclick="admContent()">Content</button>'+
+  '<button class="btn" onclick="admCoins()">Coins</button>'+
+  '<button class="btn" onclick="admPlans()">Plans</button>'+
+  '<button class="btn" onclick="admAddr()">Deposit addresses</button>'+
+  '<button class="btn" onclick="admEvents()">Events & counters</button>'+
+  '<button class="btn" onclick="admQuestions()">Connect questions</button>'+
+  '<button class="btn" onclick="admVideo()">Upload promo video</button>'+
+  '<button class="btn" onclick="admStats()">Stats</button>'+
+  '<button class="btn" onclick="admLogs()">Logs</button>'+
+  '</div><div class="divider"></div><div id="adm_out"></div></div>';
+  v.innerHTML = h;
+}
 
-        const allCoins = [
-            { symbol: 'BTC', name: 'Bitcoin', networks: ['Bitcoin Network', 'BEP20'] },
-            { symbol: 'USDT', name: 'Tether USD', networks: ['TRC20', 'ERC20', 'BEP20'] },
-            { symbol: 'ETH', name: 'Ethereum', networks: ['ERC20', 'Arbitrum'] },
-            { symbol: 'SOL', name: 'Solana', networks: ['Solana Mainnet'] },
-            { symbol: 'XRP', name: 'Ripple', networks: ['XRP Ledger'] }
-        ];
-        
-        // Add extra coins up to 50+
-        ['BNB','ADA','DOGE','AVAX','TRX','MATIC','LTC','LINK','DOT','UNI','BCH','NEAR','APT','ATOM','ETC','XLM','FIL','ICP','HBAR','VET','GRT','RENDER','INJ','IMX','STX','OP','ALGO','FTM','TIA','SUI','PEPE','SHIB','FLOKI','BONK','WIF','JUP','SEI','KAS','RUNE','AAVE','MKR','SNX','CRV','COMP','ENJ','CHZ','ZIL','ONE','IOST','QTUM','ICX','ONT'].forEach(c => {
-            allCoins.push({ symbol: c, name: c + ' Token', networks: ['TRC20', 'BEP20'] });
-        });
+function admOut(t){ $("adm_out").innerHTML = t; }
+function admUsers(){
+  api("admin_users",{},function(r){
+    if(!r.ok){ toast(r.error||"Failed"); return; }
+    var h = '<h2>Users</h2>';
+    for(var i=0;i<r.users.length;i++){
+      var x = r.users[i];
+      h += '<div class="stat"><span>@'+esc(x.username)+' (id '+esc(x.tid)+')<br><span class="small">bal '+esc(x.balance)+' | bonus '+esc(x.bonus)+' | '+(x.banned?"BANNED":"ok")+'</span></span><b>'+
+      '<a class="btn" style="width:auto;padding:6px 10px;font-size:11px" onclick="admBal(\''+esc(x.tid)+'\')">Balance</a> '+
+      '<a class="btn" style="width:auto;padding:6px 10px;font-size:11px" onclick="admBan(\''+esc(x.tid)+'\')">Ban</a></b></div>';
+    }
+    admOut(h);
+  });
+}
+function admBal(tid){
+  var amt = prompt("New balance for "+tid+":");
+  if(amt===null) return;
+  api("admin_balance",{tid:tid,amount:parseFloat(amt)},function(r){ toast(r.ok?"Balance set":r.error); admUsers(); });
+}
+function admBan(tid){
+  api("admin_ban",{tid:tid,banned:true},function(r){ toast(r.ok?"Toggled":r.error); admUsers(); });
+}
+function admRequests(){
+  api("admin_requests",{},function(r){
+    var h = '<h2>Deposit / withdraw requests</h2>';
+    for(var i=0;i<r.requests.length;i++){
+      var q = r.requests[i];
+      h += '<div class="stat"><span>'+esc(q.type)+' @'+esc(q.username)+' '+esc(q.amount)+' '+esc(q.coin)+'/'+esc(q.network)+' - '+esc(q.status)+'</span><b>'+
+      (q.status=="pending"?'<a class="btn" style="width:auto;padding:6px 10px;font-size:11px" onclick="admReq(\''+esc(q.id)+'\',\'confirm\')">Confirm</a> <a class="btn danger" style="width:auto;padding:6px 10px;font-size:11px" onclick="admReq(\''+esc(q.id)+'\',\'reject\')">Reject</a>':"")+'</b></div>';
+    }
+    admOut(h);
+  });
+}
+function admReq(id,act){
+  api("admin_request_action",{id:id,action:act},function(r){ toast(r.ok?"Done":r.error); admRequests(); });
+}
+function admTickets(){
+  api("admin_tickets",{},function(r){
+    var h = '<h2>Support tickets</h2>';
+    for(var tid in r.tickets){
+      var t = r.tickets[tid];
+      h += '<div class="stat"><span>@'+esc(t.username)+' - '+t.messages.length+' msgs</span><b><a class="btn" style="width:auto;padding:6px 10px;font-size:11px" onclick="admOpen(\''+esc(tid)+'\')">Open</a></b></div>';
+    }
+    admOut(h);
+  });
+}
+function admOpen(tid){
+  api("admin_tickets",{},function(r){
+    var t = r.tickets[tid];
+    var h = '<h2>Ticket @'+esc(t.username)+'</h2>';
+    for(var i=0;i<t.messages.length;i++){
+      h += '<div class="msg '+(t.messages[i].from=="user"?"u":"a")+'">'+esc(t.messages[i].text)+'</div>';
+    }
+    h += '<div class="row mt"><input class="input" id="rep_t" placeholder="Reply..." style="margin-bottom:0"><button class="btn primary" style="width:auto" onclick="admReply(\''+esc(tid)+'\')">Reply</button></div>';
+    admOut(h);
+  });
+}
+function admReply(tid){
+  var t = $("rep_t").value; if(!t) return;
+  api("admin_ticket_reply",{tid:tid,text:t},function(r){ toast(r.ok?"Reply sent":r.error); admOpen(tid); });
+}
+function admBroadcast(){
+  var t = prompt("Broadcast text to ALL users (shows inside the app and in Telegram):");
+  if(t===null) return;
+  api("admin_broadcast",{text:t},function(r){ toast(r.ok?("Sent to "+r.sent+" users"):r.error); });
+}
+function admVideo(){
+  var h = '<h2>Upload promo video</h2><p class="small">The video plays on /start in the bot. Max ~20 MB.</p>'+
+  '<input type="file" id="vd_f" accept="video/*" class="input">'+
+  '<button class="btn primary" onclick="admVideoSend()">Upload</button>';
+  admOut(h);
+}
+function admVideoSend(){
+  var f = $("vd_f").files[0];
+  if(!f){ toast("Pick a video first"); return; }
+  var rd = new FileReader();
+  rd.onload = function(){
+    var b64 = String(rd.result).split(",")[1]||"";
+    toast("Uploading...");
+    api("admin_video_upload",{name:f.name,data:b64},function(r){
+      toast(r.ok ? (r.file_id?("Video uploaded (file_id "+String(r.file_id).slice(0,18)+"...)"):"Sent to admin, file_id pending") : "Upload failed");
+    });
+  };
+  rd.readAsDataURL(f);
+}
+function admContent(){
+  api("content",{},function(r){
+    var c = r.content||{};
+    var h = '<h2>Content keys</h2>';
+    for(var k in c){
+      var val = String(c[k]); if(val.length>40) val = val.slice(0,40)+"...";
+      h += '<div class="stat"><span>'+esc(k)+': '+esc(val)+'</span><b><a class="btn" style="width:auto;padding:6px 10px;font-size:11px" onclick="admSetC(\''+esc(k)+'\')">Edit</a></b></div>';
+    }
+    admOut(h);
+  });
+}
+function admSetC(k){
+  var v = prompt("New value for "+k+":");
+  if(v===null) return;
+  api("admin_content",{key:k,value:v},function(r){ toast(r.ok?"Updated":r.error); admContent(); });
+}
+function admCoins(){
+  api("coins",{},function(r){
+    var h = '<h2>Coins ('+Object.keys(r.coins).length+')</h2><p class="small">Edit the JSON below (coin: [networks]).</p>'+
+    '<textarea class="input" id="cn_j" style="height:120px">'+esc(JSON.stringify(r.coins))+'</textarea>'+
+    '<button class="btn primary" onclick="saveCoins()">Save coins</button>';
+    admOut(h);
+  });
+}
+function saveCoins(){
+  try{
+    var j = JSON.parse($("cn_j").value);
+    api("admin_coins",{coins:j},function(r){ toast(r.ok?"Coins saved":r.error); if(r.ok) bootData.coins=j; });
+  }catch(e){ toast("Invalid JSON"); }
+}
+function admPlans(){
+  api("coins",{},function(r){
+    var h = '<h2>Plans</h2><p class="small">Each plan: {id, amount, seconds, returns}.</p>'+
+    '<textarea class="input" id="pl_j" style="height:120px">'+esc(JSON.stringify(r.plans))+'</textarea>'+
+    '<button class="btn primary" onclick="savePlans()">Save plans</button>';
+    admOut(h);
+  });
+}
+function savePlans(){
+  try{
+    var j = JSON.parse($("pl_j").value);
+    api("admin_plans",{plans:j},function(r){ toast(r.ok?"Plans saved":r.error); if(r.ok) bootData.plans=j; });
+  }catch(e){ toast("Invalid JSON"); }
+}
+function admAddr(){
+  api("boot",{},function(r){
+    var h = '<h2>Deposit addresses</h2>';
+    var coins = r.coins||{};
+    for(var c in coins){
+      var nets = coins[c].networks||[];
+      for(var i=0;i<nets.length;i++){
+        var key = c+"/"+nets[i];
+        var val = (r.deposit||{})[key]||"";
+        h += '<div class="stat"><span>'+esc(key)+'</span><b><a class="btn" style="width:auto;padding:6px 10px;font-size:11px" onclick="admSetA(\''+esc(key)+'\')">Set</a></b></div>';
+      }
+    }
+    admOut(h);
+  });
+}
+function admSetA(key){
+  var v = prompt("Address for "+key+":");
+  if(v===null) return;
+  var parts = key.split("/");
+  api("admin_addr",{coin:parts[0],network:parts[1],address:v},function(r){ toast(r.ok?"Address saved":r.error); admAddr(); });
+}
+function admEvents(){
+  var ev = prompt("Events (comma separated):");
+  if(ev===null) return;
+  api("admin_events",{events:ev.split(",").filter(function(x){return x.trim();})},function(r){ toast(r.ok?"Events saved":r.error); });
+}
+function admQuestions(){
+  var q = prompt("Connect questions (comma separated):");
+  if(q===null) return;
+  api("admin_questions",{questions:q.split(",").filter(function(x){return x.trim();})},function(r){ toast(r.ok?"Questions saved":r.error); });
+}
+function admStats(){
+  api("admin_stats",{},function(r){
+    var s = r.stats||{};
+    var h = '<h2>Stats</h2>';
+    for(var k in s){ h += '<div class="stat"><span>'+esc(k)+'</span><b>'+esc(s[k])+'</b></div>'; }
+    h += '<p class="small mt">Set a counter: key=value via prompt.</p><button class="btn" onclick="admSetStat()">Set counter</button>';
+    admOut(h);
+  });
+}
+function admSetStat(){
+  var k = prompt("Counter key (registered/today/deposits/withdraws/trades/support):");
+  if(k===null) return;
+  var v = prompt("New value:");
+  if(v===null) return;
+  api("admin_stats",{key:k,value:parseFloat(v)},function(r){ toast(r.ok?"Saved":r.error); admStats(); });
+}
+function admLogs(){
+  api("admin_logs",{},function(r){
+    var h = '<h2>Logs</h2>';
+    for(var i=0;i<(r.logs||[]).length;i++){
+      h += '<div class="stat"><span>'+esc(r.logs[i].time)+' - '+esc(r.logs[i].action)+'</span><b>'+esc(r.logs[i].detail||"")+'</b></div>';
+    }
+    admOut(h);
+  });
+}
 
-        const allWallets = ["Trust Wallet", "MetaMask", "Binance Web3", "ImToken", "Phantom", "Coinbase Wallet", "TokenPocket", "SafePal", "OKX Wallet", "WalletConnect"];
+function bootFail(msg){
+  var b = $("boot");
+  if(!b){ return; }
+  var box = $("bootbox");
+  if(box){
+    box.innerHTML = '<div style="opacity:.8;margin-bottom:8px">'+esc(msg)+'</div>'+
+    '<a onclick="location.reload()">Try again</a>';
+  }
+}
 
-        let selectedCoin = null;
-        let selectedNet = null;
-        let selectedPkgAmount = 0;
+function boot(){
+  var tu = tgUser();
+  $("tg").textContent = tu?("@"+(tu.username||tu.id)):"web";
+  if(tu){ tgId = tu.id; tgUname = tu.username||""; }
+  loadSess();
 
-        window.onload = function() {
-            updateBalanceUI();
-            if(currentUser) { switchPage('home'); } else { switchPage('signup'); }
-            renderCoins();
-            renderWalletsList();
-            loadAdminPackageInputs();
-        };
+  var b = $("boot");
+  if(b){ b.className = "auth-mode"; }
 
-        function updateBalanceUI() {
-            document.getElementById('homeUserBalance').innerText = userBalance.toFixed(2);
-            localStorage.setItem('app_balance', userBalance);
-        }
+  api("boot",{},function(r){
+    bootData = r;
+    if(!r || r.ok !== true){
+      bootFail("Could not reach the server" + (r && r.error ? (" (" + r.error + ")") : "") + ".");
+      return;
+    }
+    if(me && me.token){
+      api("me",{},function(m){
+        if(m && m.ok && m.account){ me = {tid:m.account.tid, token:me.token, username:m.account.username, admin:!!m.account.admin}; saveSess(); go("home"); }
+        else { me = null; go("landing"); }
+      });
+    } else {
+      go("landing");
+    }
+  });
 
-        function switchPage(pageId) {
-            ['pageSignup', 'pageLogin', 'pageForgot', 'pageHome', 'pageTrading', 'pageWallet', 'pageSupport', 'pageAdmin'].forEach(p => {
-                document.getElementById(p).classList.add('hidden');
-            });
-            let target = 'page' + pageId.charAt(0).toUpperCase() + pageId.slice(1);
-            document.getElementById(target).classList.remove('hidden');
+  setTimeout(function(){
+    var bb = $("boot");
+    if(bb && $("view").innerHTML === ""){
+      bootFail("Still loading. Check your connection and try again.");
+    }
+  }, 12000);
+}
 
-            if(['signup', 'login', 'forgot'].includes(pageId)) {
-                document.getElementById('navBarContainer').classList.add('hidden');
-                document.getElementById('headerAdminShortcut').classList.add('hidden');
-            } else {
-                document.getElementById('navBarContainer').classList.remove('hidden');
-                document.getElementById('headerAdminShortcut').classList.remove('hidden');
-                updateNavBarActive(pageId);
-            }
-            window.scrollTo(0,0);
-        }
-
-        function updateNavBarActive(active) {
-            ['home', 'trading', 'wallet', 'support', 'admin'].forEach(btn => {
-                let el = document.getElementById('navBtn' + btn.charAt(0).toUpperCase() + btn.slice(1));
-                if(el) {
-                    el.className = (btn === active) ? "flex flex-col items-center text-accentGreen transition-all" : "flex flex-col items-center text-gray-400 hover:text-white transition-all";
-                }
-            });
-        }
-
-        function handleRegister() {
-            let u = document.getElementById('regUser').value;
-            if(!u) { alert('Enter username'); return; }
-            currentUser = u;
-            localStorage.setItem('app_user', u);
-            userBalance += 100;
-            updateBalanceUI();
-            document.getElementById('homeUsernameDisplay').innerText = '@' + u;
-            switchPage('home');
-        }
-
-        function handleLogin() {
-            let u = document.getElementById('loginUser').value;
-            if(!u) { alert('Enter username'); return; }
-            currentUser = u;
-            localStorage.setItem('app_user', u);
-            document.getElementById('homeUsernameDisplay').innerText = '@' + u;
-            switchPage('home');
-        }
-
-        function handleLogout() {
-            localStorage.removeItem('app_user');
-            currentUser = null;
-            switchPage('login');
-        }
-
-        function submitRecoveryRequest() {
-            alert('Recovery instructions sent.');
-            switchPage('login');
-        }
-
-        function renderCoins() {
-            let query = document.getElementById('coinSearchInput').value.toLowerCase();
-            let container = document.getElementById('coinsGridContainer');
-            container.innerHTML = '';
-            allCoins.filter(c => c.symbol.toLowerCase().includes(query) || c.name.toLowerCase().includes(query)).forEach(coin => {
-                let div = document.createElement('div');
-                div.className = "flex justify-between items-center bg-darkBg p-2.5 rounded-xl border border-darkBorder hover:border-accentGreen cursor-pointer transition-all";
-                div.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <div class="w-6 h-6 rounded-full bg-cardBg border border-darkBorder flex items-center justify-center font-bold text-[10px] text-accentGreen">${coin.symbol[0]}</div>
-                        <div><p class="text-xs font-bold text-white">${coin.symbol}</p><p class="text-[9px] text-gray-400">${coin.name}</p></div>
-                    </div>
-                    <span class="text-[9px] bg-accentGreen/10 text-accentGreen px-2 py-0.5 rounded font-bold">Select</span>
-                `;
-                div.onclick = () => selectCoinForTrading(coin);
-                container.appendChild(div);
-            });
-        }
-
-        function selectCoinForTrading(coin) {
-            selectedCoin = coin;
-            document.getElementById('tradingConfigSection').classList.remove('hidden');
-            document.getElementById('activeCoinTitle').innerText = `Selected Asset: ${coin.symbol} (${coin.name})`;
-
-            let netBox = document.getElementById('networkChoicesBox');
-            netBox.innerHTML = '';
-            coin.networks.forEach((net, idx) => {
-                let btn = document.createElement('button');
-                btn.className = `py-2 px-3 text-xs font-bold rounded-xl border ${idx === 0 ? 'border-accentGreen bg-accentGreen/10 text-accentGreen' : 'border-darkBorder bg-darkBg text-gray-300'}`;
-                btn.innerText = net;
-                btn.onclick = () => {
-                    selectedNet = net;
-                    Array.from(netBox.children).forEach(b => b.className = "py-2 px-3 text-xs font-bold rounded-xl border border-darkBorder bg-darkBg text-gray-300");
-                    btn.className = "py-2 px-3 text-xs font-bold rounded-xl border border-accentGreen bg-accentGreen/10 text-accentGreen";
-                };
-                netBox.appendChild(btn);
-            });
-            selectedNet = coin.networks[0];
-
-            // Render packages dynamically with admin-configured timer and cost
-            let pkgBox = document.getElementById('packageChoicesBox');
-            pkgBox.innerHTML = '';
-            packagesData.forEach((pkg, idx) => {
-                let pDiv = document.createElement('div');
-                pDiv.className = `p-3 rounded-xl border flex justify-between items-center cursor-pointer ${idx === 0 ? 'border-accentGreen bg-accentGreen/5' : 'border-darkBorder bg-darkBg'}`;
-                pDiv.innerHTML = `
-                    <span class="text-xs font-bold text-white">${pkg.name} (${pkg.timer})</span>
-                    <span class="text-xs font-bold text-accentGreen">${pkg.cost} ${coin.symbol}</span>
-                `;
-                pDiv.onclick = () => {
-                    selectedPkgAmount = pkg.cost;
-                    document.getElementById('calculatedReturnAmount').innerText = `${pkg.cost}.00 ${coin.symbol}`;
-                    Array.from(pkgBox.children).forEach(el => el.className = "p-3 rounded-xl border flex justify-between items-center cursor-pointer border-darkBorder bg-darkBg");
-                    pDiv.className = "p-3 rounded-xl border flex justify-between items-center cursor-pointer border-accentGreen bg-accentGreen/5";
-                };
-                pkgBox.appendChild(pDiv);
-            });
-            selectedPkgAmount = packagesData[0].cost;
-            document.getElementById('calculatedReturnAmount').innerText = `${selectedPkgAmount}.00 ${coin.symbol}`;
-        }
-
-        function executeCryptoTrade() {
-            if(!selectedCoin || !selectedNet || !selectedPkgAmount) { alert('Select coin, network and package'); return; }
-            if(userBalance < selectedPkgAmount) { alert('Insufficient balance!'); switchPage('wallet'); return; }
-            userBalance -= selectedPkgAmount;
-            updateBalanceUI();
-            alert(`Contract successfully executed! ${selectedPkgAmount} ${selectedCoin.symbol} locked.`);
-        }
-
-        function switchWalletTab(tab) {
-            ['walletDepositPane', 'walletWithdrawPane', 'walletConnectPane'].forEach(p => document.getElementById(p).classList.add('hidden'));
-            ['wTabDep', 'wTabWith', 'wTabConn'].forEach(b => document.getElementById(b).className = "flex-1 py-2 text-xs font-bold rounded-xl text-gray-400 hover:text-white transition-all");
-
-            if(tab === 'deposit') {
-                document.getElementById('walletDepositPane').classList.remove('hidden');
-                document.getElementById('wTabDep').className = "flex-1 py-2 text-xs font-bold rounded-xl bg-accentGreen text-black transition-all";
-            } else if(tab === 'withdraw') {
-                document.getElementById('walletWithdrawPane').classList.remove('hidden');
-                document.getElementById('wTabWith').className = "flex-1 py-2 text-xs font-bold rounded-xl bg-accentBlue text-white transition-all";
-            } else if(tab === 'connect') {
-                document.getElementById('walletConnectPane').classList.remove('hidden');
-                document.getElementById('wTabConn').className = "flex-1 py-2 text-xs font-bold rounded-xl bg-accentGreen text-black transition-all";
-            }
-        }
-
-        function updateDepositAddressDisplay() {
-            document.getElementById('displayAdminWalletAddr').innerText = adminWalletTrc;
-        }
-
-        function copyAdminAddress() {
-            navigator.clipboard.writeText(adminWalletTrc);
-            alert('Copied!');
-        }
-
-        function submitDepositProofToAdmin() {
-            alert('Deposit proof submitted!');
-        }
-
-        function submitWithdrawalRequest() {
-            let amt = parseFloat(document.getElementById('withdrawAmountInput').value);
-            if(!amt || amt > userBalance) { alert('Invalid amount'); return; }
-            userBalance -= amt;
-            updateBalanceUI();
-            alert('Withdrawal requested successfully.');
-        }
-
-        function renderWalletsList() {
-            let container = document.getElementById('walletsGridContainer');
-            container.innerHTML = '';
-            allWallets.forEach(w => {
-                let btn = document.createElement('button');
-                btn.className = "flex items-center gap-2 p-3 bg-darkBg rounded-xl border border-darkBorder hover:border-accentGreen text-xs text-white text-left";
-                btn.innerHTML = `<i class="fa-solid fa-wallet text-accentGreen"></i> <span>${w}</span>`;
-                btn.onclick = () => alert(`Connecting to ${w}...`);
-                container.appendChild(btn);
-            });
-        }
-
-        function sendUserSupportMessage() {
-            let msg = document.getElementById('supportUserMsgInput').value;
-            if(!msg) return;
-            let stream = document.getElementById('supportChatStream');
-            stream.innerHTML += `<div class="bg-darkBg p-3 rounded-2xl border border-darkBorder ml-auto max-w-[85%] text-right"><p class="text-gray-200">${msg}</p></div>`;
-            document.getElementById('supportUserMsgInput').value = '';
-        }
-
-        function switchAdminSubTab(sub) {
-            ['admPaneGeneral', 'admPaneTrading'].forEach(p => document.getElementById(p).classList.add('hidden'));
-            ['admTabGen', 'admTabTrd'].forEach(b => document.getElementById(b).className = "p-2.5 rounded-xl bg-darkBg text-gray-400 border border-darkBorder");
-            if(sub === 'general') {
-                document.getElementById('admPaneGeneral').classList.remove('hidden');
-                document.getElementById('admTabGen').className = "p-2.5 rounded-xl bg-red-600 text-white";
-            } else {
-                document.getElementById('admPaneTrading').classList.remove('hidden');
-                document.getElementById('admTabTrd').className = "p-2.5 rounded-xl bg-red-600 text-white";
-            }
-        }
-
-        function loadAdminPackageInputs() {
-            for(let i=0; i<3; i++) {
-                if(packagesData[i]) {
-                    document.getElementById(`pkgName${i+1}`).value = packagesData[i].name;
-                    document.getElementById(`pkgTimer${i+1}`).value = packagesData[i].timer;
-                    document.getElementById(`pkgCost${i+1}`).value = packagesData[i].cost;
-                }
-            }
-        }
-
-        function saveAdminGeneralSettings() {
-            adminWalletTrc = document.getElementById('admWalletTrcInput').value;
-            localStorage.setItem('adm_wallet', adminWalletTrc);
-            alert('Settings saved!');
-        }
-
-        function saveAdminPackageSettings() {
-            packagesData = [
-                { name: document.getElementById('pkgName1').value, timer: document.getElementById('pkgTimer1').value, cost: parseInt(document.getElementById('pkgCost1').value) || 1000 },
-                { name: document.getElementById('pkgName2').value, timer: document.getElementById('pkgTimer2').value, cost: parseInt(document.getElementById('pkgCost2').value) || 2000 },
-                { name: document.getElementById('pkgName3').value, timer: document.getElementById('pkgTimer3').value, cost: parseInt(document.getElementById('pkgCost3').value) || 5000 }
-            ];
-            localStorage.setItem('custom_packages', JSON.stringify(packagesData));
-            alert('Timers, names, and package costs successfully updated from Admin panel!');
-        }
-    </script>
+boot();
+</script>
 </body>
 </html>
